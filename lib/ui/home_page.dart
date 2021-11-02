@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meta_wallet/ui/home_list_cell.dart';
 import 'package:meta_wallet/network/http_request.dart';
 import 'package:meta_wallet/model/transaction_model.dart';
+import 'package:meta_wallet/util/event_bus.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -23,8 +24,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List _transactions = [];
+  bool _isDark = false;
 
-  Future<void> loadTransactionInfo() async {
+  Future<void> _loadTransactionInfo() async {
     HttpRequest request = HttpRequest();
     List transactions = await request.doRequest("http://www.aaronview.cn/other/demo_list_data.json");
     setState(() {
@@ -37,10 +39,16 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _changeMainTheme() {
+    setState(() {
+      _isDark = !_isDark;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    loadTransactionInfo();
+    _loadTransactionInfo();
   }
 
   @override
@@ -53,9 +61,27 @@ class _HomePageState extends State<HomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the HomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          tooltip: 'Navigation',
+          onPressed: () => debugPrint('Navigation button is pressed'),
+        ),
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(_isDark ? Icons.brightness_5 : Icons.brightness_4),
+            tooltip: 'Theme',
+            onPressed: () {
+              bus.emit(bThemeChange);
+              _changeMainTheme();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_horiz),
+            tooltip: 'More',
+            onPressed: () => debugPrint('More button is pressed'),
+          )
+        ],
       ),
       body: Container(
         color: Theme.of(context).backgroundColor,
