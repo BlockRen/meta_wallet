@@ -23,9 +23,9 @@ class TransactionModel {
     if (_address == null || _address!.length < 30) {
       return null;
     }
-    return _address!.substring(0, 8) +
+    return _address!.substring(0, 10) +
         "..." +
-        _address!.substring(_address!.length - 6);
+        _address!.substring(_address!.length - 8);
   }
 
   String? _getFormatTimeString() {
@@ -42,7 +42,7 @@ class TransactionModel {
       int minutes = (seconds / 60).floor();
       return "$minutes分钟前";
     }
-    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateFormat dateFormat = DateFormat("yyyy.MM.dd HH:mm");
     return dateFormat.format(_time!);
   }
 

@@ -84,10 +84,10 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: ListView.builder(
           shrinkWrap: true,
-          itemExtent: 60,
+          itemExtent: 70,
           itemCount: _transactions.length,
           itemBuilder: (BuildContext context, int index) {
             TransactionModel model = TransactionModel(_transactions[index]);
