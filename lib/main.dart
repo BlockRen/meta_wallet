@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/ui/home_page.dart';
 import 'package:meta_wallet/ui/theme/light_theme.dart';
 import 'package:meta_wallet/ui/theme/dart_theme.dart';
 import 'package:meta_wallet/util/event_bus.dart';
+import 'package:meta_wallet/route/page_router.dart';
 
 void main() {
   runApp(const MetaApp());
@@ -35,9 +35,9 @@ class _MetaAppState extends State<MetaApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Wa Demo',
+      title: 'Wa Meta',
       theme: isDark ? darkTheme : lightTheme,
-      home: const HomePage(title: 'Meta Wallet'),
+      routes: router.registerRoutes(context),
     );
   }
 
