@@ -6,7 +6,7 @@ class TransactionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TransactionModel? model = ModalRoute.of(context)!.settings.arguments as TransactionModel?;
+    TransactionModel model = ModalRoute.of(context)!.settings.arguments as TransactionModel;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Transaction"),
@@ -31,19 +31,51 @@ class TransactionPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(model != null ? model.address : "unknown address"),
-              ],
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(model.dealType == "sent" ? "接收者" : "发送者"),
+                  Text(model.address),
+                ],
+              ),
             ),
             Divider(height: 10.0, thickness: 0.8, indent: 10.0, color: Theme.of(context).dividerColor),
-            Text(model != null ? model.address : "unknown address"),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Token"),
+                  Text(model.amount.toString() + "  " + model.tokenName),
+                ],
+              ),
+            ),
             Divider(height: 10.0, thickness: 0.8, indent: 10.0, color: Theme.of(context).dividerColor),
-            Text(model != null ? model.address : "unknown address"),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text("网络费用"),
+                  Text("0"),
+                ],
+              ),
+            ),
+            Divider(height: 10.0, thickness: 0.8, indent: 10.0, color: Theme.of(context).dividerColor),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("时间"),
+                  Text(model.timeString),
+                ],
+              ),
+            ),
           ],
         ),
       ),
