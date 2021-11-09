@@ -37,13 +37,13 @@ final ThemeData darkTheme = ThemeData(
   hintColor: const Color( 0x80ffffff ),
   errorColor: const Color( 0xffd32f2f ),
   buttonTheme: const ButtonThemeData(
-    textTheme: ButtonTextTheme.normal,
-    minWidth: 88,
+    textTheme: ButtonTextTheme.primary,
+    minWidth: 108,
     height: 36,
     padding: EdgeInsets.only(top:0,bottom:0,left:16, right:16),
     shape:     RoundedRectangleBorder(
       side: BorderSide(color: Color( 0xff000000 ), width: 0, style: BorderStyle.none, ),
-      borderRadius: BorderRadius.all(Radius.circular(2.0)),
+      borderRadius: BorderRadius.all(Radius.circular(20.0)),
     )
     ,
     alignedDropdown: false ,
