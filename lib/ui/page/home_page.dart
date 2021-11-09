@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meta_wallet/util/magic_value.dart';
 import 'package:meta_wallet/ui/component/home_list_cell.dart';
 import 'package:meta_wallet/network/http_request.dart';
 import 'package:meta_wallet/model/transaction_model.dart';
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadTransactionInfo() async {
     HttpRequest request = HttpRequest();
-    List transactions = await request.doRequest("http://www.aaronview.cn/other/demo_list_data.json");
+    List transactions = await request.doRequest(MagicValue.transactionInfoUrl);
     setState(() {
       _transactions = transactions;
     });
@@ -39,6 +40,21 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadTransactionInfo();
+  }
+
+  Widget iconButton(String text, IconData icon, VoidCallback callback) {
+    return MaterialButton(
+      textColor: Theme.of(context).primaryTextTheme.bodyText1?.color,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(icon),
+          Text(text),
+        ],
+      ),
+      onPressed: callback,
+    );
   }
 
   @override
@@ -69,14 +85,36 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemExtent: 70,
-          itemCount: _transactions.length,
-          itemBuilder: (BuildContext context, int index) {
-            TransactionModel model = TransactionModel(_transactions[index]);
-            return HomeListCell(model);
-          },
+        child: Stack(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              itemExtent: MagicValue.cellHeightOfList,
+              itemCount: _transactions.length,
+              itemBuilder: (BuildContext context, int index) {
+                TransactionModel model = TransactionModel(_transactions[index]);
+                return HomeListCell(model);
+              },
+            ),
+            Align(
+              child: Container(
+                height: MagicValue.bottomTabBarHeight,
+                color: Theme.of(context).bottomAppBarColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    iconButton("Receive", Icons.qr_code, () {
+
+                    }),
+                    iconButton("Send", Icons.send, () {
+
+                    })
+                  ],
+                ),
+              ),
+              alignment: Alignment.bottomCenter,
+            )
+          ],
         ),
       ),
     );
