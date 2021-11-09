@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meta_wallet/util/magic_value.dart';
 import 'package:meta_wallet/util/app_icons.dart';
 import 'package:meta_wallet/model/transaction_model.dart';
 import 'package:meta_wallet/route/page_router.dart';
@@ -16,7 +17,7 @@ class HomeListCell extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           decoration: BoxDecoration( // 用Decoration设置圆角
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(MagicValue.cardBorderRadius),
             color: Theme.of(context).primaryColorDark,
           ),
           child: Row(

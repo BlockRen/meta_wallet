@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meta_wallet/util/magic_value.dart';
 import 'package:meta_wallet/model/transaction_model.dart';
 
 class TransactionPage extends StatelessWidget {
@@ -15,7 +16,7 @@ class TransactionPage extends StatelessWidget {
         margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
         decoration: BoxDecoration( // 用Decoration设置圆角
           border: Border.all(color: Theme.of(context).highlightColor, width: 0.5),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(MagicValue.cardBorderRadius),
           boxShadow: const [
             BoxShadow(color: Color(0x66000000),
               offset: Offset(1.0, 1.0),
