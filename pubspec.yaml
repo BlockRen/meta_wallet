@@ -48,6 +48,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
 
+  # SVG
+  flutter_svg: ^0.23.0+1
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -78,7 +81,7 @@ flutter:
   fonts:
     - family: AppIcons
       fonts:
-        - asset: asset/AppIcons.ttf
+        - asset: assets/AppIcons.ttf
           weight: 500
   #   - family: Schyler
   #     fonts:
@@ -93,3 +96,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  assets:
+    - assets/QR.svg

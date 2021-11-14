@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meta_wallet/main.dart';
-import 'package:meta_wallet/route/page_router.dart';
+import 'package:meta_wallet/level_3_business/route/page_router.dart';
 
 void main() {
   testWidgets('Test page_router', (WidgetTester tester) async {

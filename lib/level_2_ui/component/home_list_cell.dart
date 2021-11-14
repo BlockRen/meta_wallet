@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/util/magic_value.dart';
-import 'package:meta_wallet/util/app_icons.dart';
-import 'package:meta_wallet/model/transaction_model.dart';
-import 'package:meta_wallet/route/page_router.dart';
+import 'package:meta_wallet/level_1_core/util/magic_value.dart';
+import 'package:meta_wallet/level_1_core/util/app_icons.dart';
+import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
 
 class HomeListCell extends StatelessWidget {
-  const HomeListCell(this.model, {Key? key}) : super(key: key);
+  const HomeListCell(this.model, this.onTapFunction, {Key? key}) : super(key: key);
 
   final TransactionModel model;
+  final Function onTapFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class HomeListCell extends StatelessWidget {
           ),
         ),
         onTap: () {
-          router.openPage(context, "transaction", arguments: model);
+          onTapFunction();
         },
       ),
     );

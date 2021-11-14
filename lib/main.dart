@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/ui/theme/light_theme.dart';
-import 'package:meta_wallet/ui/theme/dart_theme.dart';
-import 'package:meta_wallet/util/event_bus.dart';
-import 'package:meta_wallet/route/page_router.dart';
+import 'package:meta_wallet/level_1_core/util/event_bus.dart';
+import 'package:meta_wallet/level_2_ui//theme/light_theme.dart';
+import 'package:meta_wallet/level_2_ui/theme/dart_theme.dart';
+import 'package:meta_wallet/level_2_ui/model/account_model.dart';
+import 'package:meta_wallet/level_3_business/route/page_router.dart';
 
 void main() {
   runApp(const MetaApp());
+  // 账户初始化
+  AccountModel().update();
 }
 
 class MetaApp extends StatefulWidget {

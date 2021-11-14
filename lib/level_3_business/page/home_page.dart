@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/util/magic_value.dart';
-import 'package:meta_wallet/ui/component/home_list_cell.dart';
-import 'package:meta_wallet/network/http_request.dart';
-import 'package:meta_wallet/model/transaction_model.dart';
-import 'package:meta_wallet/util/event_bus.dart';
+import 'package:meta_wallet/level_1_core/util/magic_value.dart';
+import 'package:meta_wallet/level_1_core/network/http_request.dart';
+import 'package:meta_wallet/level_1_core/util/event_bus.dart';
+import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
+import 'package:meta_wallet/level_2_ui//component/home_list_cell.dart';
+import 'package:meta_wallet/level_2_ui//component/base_sheet.dart';
+import 'package:meta_wallet/level_3_business/route/page_router.dart';
+import 'package:meta_wallet/level_3_business/sheet/receive_sheet.dart';
 
 /// 1.有状态的页面，存在State object，含状态参数；
 /// 2.调用了setState，则build会重新执行，否则不会；
@@ -93,7 +96,9 @@ class _HomePageState extends State<HomePage> {
               itemCount: _transactions.length,
               itemBuilder: (BuildContext context, int index) {
                 TransactionModel model = TransactionModel(_transactions[index]);
-                return HomeListCell(model);
+                return HomeListCell(model, () {
+                  router.openPage(context, "transaction", arguments: model);
+                });
               },
             ),
             Align(
@@ -104,7 +109,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     iconButton("Receive", Icons.qr_code, () {
+                      SheetBase.showAppSheet(
+                          context: context,
+                          widget: const ReceiveSheet(
 
+                          ),
+                          color: Theme.of(context).backgroundColor,
+                          onDisposed: () {});
                     }),
                     iconButton("Send", Icons.send, () {
 
@@ -117,6 +128,10 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      // bottomSheet: Container(
+      //   child: const Text("我是底部弹出来的"),
+      //   height: 200.0,
+      // ),
     );
   }
 }

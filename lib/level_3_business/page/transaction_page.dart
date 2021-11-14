@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/util/magic_value.dart';
-import 'package:meta_wallet/model/transaction_model.dart';
+import 'package:meta_wallet/level_1_core/util/magic_value.dart';
+import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
 
 class TransactionPage extends StatelessWidget {
   const TransactionPage({Key? key}) : super(key: key);
