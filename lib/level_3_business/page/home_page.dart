@@ -80,9 +80,9 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.more_horiz),
-            tooltip: 'More',
-            onPressed: () => debugPrint('More button is pressed'),
+            icon: const Icon(Icons.perm_identity),
+            tooltip: 'Identity',
+            onPressed: () => router.openPage(context, 'avatar'),
           )
         ],
       ),
