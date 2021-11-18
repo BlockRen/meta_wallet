@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(
           icon: const Icon(Icons.menu),
           tooltip: 'Navigation',
-          onPressed: () => debugPrint('Navigation button is pressed'),
+          onPressed: () => router.openPage(context, 'trace'),
         ),
         title: Text(widget.title),
         actions: <Widget>[
