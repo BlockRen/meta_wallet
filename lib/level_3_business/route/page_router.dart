@@ -12,7 +12,7 @@ class PageRouter {
   static final PageRouter _singleton = PageRouter._internal();
 
   //工厂构造函数
-  factory PageRouter()=> _singleton;
+  factory PageRouter() => _singleton;
 
   //简单命名Route页面在此注册，则可以通过pushNamed方式的页面路由打开
   Map<String, WidgetBuilder> registerRoutes(BuildContext context) {

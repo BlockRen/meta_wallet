@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:meta_wallet/level_1_core/network/http_request.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
-import 'package:meta_wallet/level_2_ui/component/home_list_cell.dart';
-import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
+import 'package:meta_wallet/level_2_ui/component/trace_cell.dart';
+import 'package:meta_wallet/level_2_ui/model/coin_model.dart';
+import 'package:meta_wallet/level_3_business/Trace/trace_fetch.dart';
 
 class TracePage extends StatefulWidget {
   const TracePage({Key? key}) : super(key: key);
@@ -16,20 +15,17 @@ class TracePage extends StatefulWidget {
 
 class _TracePageState extends State<TracePage> {
 
-  final List _tempMarketListData = [];
-
-  Future<void> _pullData(int pageIndex) async {
-    String urlString = MagicValue.marketDataInfoUrl + "&limit=100" + "&page=" + pageIndex.toString();
-    var response = await http.get(Uri.parse(urlString), headers: {"Accept": "application/json"});
-    List rawMarketListData = const JsonDecoder().convert(response.body)["Data"];
-    _tempMarketListData.addAll(rawMarketListData);
-  }
+  List coinModels = [];
 
   @override
   void initState() {
     super.initState();
-
-    _pullData(1);
+    //
+    TraceFetch().fetchData((List models) {
+      setState(() {
+        coinModels = models;
+      });
+    });
   }
 
   @override
@@ -41,10 +37,10 @@ class _TracePageState extends State<TracePage> {
         body: ListView.builder(
           shrinkWrap: true,
           itemExtent: MagicValue.cellHeightOfList,
-          itemCount: _tempMarketListData.length,
+          itemCount: coinModels.length,
           itemBuilder: (BuildContext context, int index) {
-            TransactionModel model = TransactionModel(_tempMarketListData[index]);
-            return HomeListCell(model, () {
+            CoinModel model = coinModels[index];
+            return TraceCell(model, () {
               // router.openPage(context, "transaction", arguments: model);
             });
           },

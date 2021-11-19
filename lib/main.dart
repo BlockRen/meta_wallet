@@ -32,7 +32,7 @@ class _MetaAppState extends State<MetaApp> {
   void initState() {
     super.initState();
     isDark = false;
-    bus.on(bThemeChange, _changeTheme);
+    eventBus.on(gThemeChange, _changeTheme);
   }
 
   @override
@@ -46,7 +46,7 @@ class _MetaAppState extends State<MetaApp> {
 
   @override
   void dispose() {
-    bus.off(bThemeChange, _changeTheme);
+    eventBus.off(gThemeChange, _changeTheme);
     super.dispose();
   }
 }
