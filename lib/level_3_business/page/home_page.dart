@@ -26,8 +26,7 @@ class _HomePageState extends State<HomePage> {
   bool _isDark = false;
 
   Future<void> _loadTransactionInfo() async {
-    HttpRequest request = HttpRequest();
-    List transactions = await request.doRequest(MagicValue.transactionInfoUrl);
+    List transactions = await HttpRequest().jsonRequest(MagicValue.transactionInfoUrl) ?? [];
     setState(() {
       _transactions = transactions;
     });
@@ -67,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(
           icon: const Icon(Icons.menu),
           tooltip: 'Navigation',
-          onPressed: () => debugPrint('Navigation button is pressed'),
+          onPressed: () => router.openPage(context, 'trace'),
         ),
         title: Text(widget.title),
         actions: <Widget>[
@@ -75,7 +74,7 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(_isDark ? Icons.brightness_5 : Icons.brightness_4),
             tooltip: 'Theme',
             onPressed: () {
-              bus.emit(bThemeChange);
+              eventBus.emit(gThemeChange);
               _changeMainTheme();
             },
           ),

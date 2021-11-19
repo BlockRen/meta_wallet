@@ -1,27 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:dio/dio.dart';
 
-class HttpRequest {
-  late HttpClient httpClient;
+class HttpRequest<T> {
+  HttpRequest();
 
-  HttpRequest() {
-    httpClient = HttpClient();
-  }
-
-  Future<List> doRequest(String urlString) async {
-    List list = [];
+  Future<T?> jsonRequest(String urlString) async {
     try {
-      Uri uri = Uri.parse(urlString);
-      var request = await httpClient.getUrl(uri);
-      var response = await request.close();
+      var response = await Dio().get(urlString);
       if (response.statusCode == HttpStatus.ok) {
-        String jsonString = await response.transform(utf8.decoder).join();
-        list = jsonDecode(jsonString);
-      } else {
+        return response.data;
       }
     } catch (exception) {
-      //print(exception);
+      debugPrint(exception.toString());
     }
-    return list;
+    return null;
   }
 }
