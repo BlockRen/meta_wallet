@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/level_3_business/page/home_page.dart';
-import 'package:meta_wallet/level_3_business/page/transaction_page.dart';
+import 'package:meta_wallet/level_3_business/transaction/home_page.dart';
+import 'package:meta_wallet/level_3_business/transaction/transaction_page.dart';
 import 'package:meta_wallet/level_3_business/avatar/avatar_page.dart';
-import 'package:meta_wallet/level_3_business/Trace/trace_page.dart';
+import 'package:meta_wallet/level_3_business/trace/trace_page.dart';
 
 class PageRouter {
   //私有构造函数

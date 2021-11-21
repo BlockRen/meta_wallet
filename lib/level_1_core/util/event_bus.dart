@@ -47,4 +47,4 @@ class EventBus {
 var eventBus = EventBus();
 
 //Event Name
-String gThemeChange = "theme_change";
+const String gThemeChange = "theme_change";

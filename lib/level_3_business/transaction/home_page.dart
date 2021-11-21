@@ -6,7 +6,8 @@ import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
 import 'package:meta_wallet/level_2_ui//component/home_list_cell.dart';
 import 'package:meta_wallet/level_2_ui//component/base_sheet.dart';
 import 'package:meta_wallet/level_3_business/route/page_router.dart';
-import 'package:meta_wallet/level_3_business/sheet/receive_sheet.dart';
+import 'package:meta_wallet/level_3_business/transaction/receive_sheet.dart';
+import 'package:meta_wallet/level_3_business/transaction/transaction_fetch.dart';
 
 /// 1.有状态的页面，存在State object，含状态参数；
 /// 2.调用了setState，则build会重新执行，否则不会；
@@ -25,13 +26,6 @@ class _HomePageState extends State<HomePage> {
   List _transactions = [];
   bool _isDark = false;
 
-  Future<void> _loadTransactionInfo() async {
-    List transactions = await HttpRequest().jsonRequest(MagicValue.transactionInfoUrl) ?? [];
-    setState(() {
-      _transactions = transactions;
-    });
-  }
-
   void _changeMainTheme() {
     setState(() {
       _isDark = !_isDark;
@@ -41,7 +35,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loadTransactionInfo();
+    TransactionFetch().loadTransactionInfo((List transactions) {
+      setState(() {
+        _transactions = transactions;
+      });
+    });
   }
 
   Widget iconButton(String text, IconData icon, VoidCallback callback) {
@@ -94,9 +92,9 @@ class _HomePageState extends State<HomePage> {
               itemExtent: MagicValue.cellHeightOfList,
               itemCount: _transactions.length,
               itemBuilder: (BuildContext context, int index) {
-                TransactionModel model = TransactionModel(_transactions[index]);
-                return HomeListCell(model, () {
-                  router.openPage(context, "transaction", arguments: model);
+                /// Open the detail page
+                return HomeListCell(_transactions[index], () {
+                  router.openPage(context, "transaction");
                 });
               },
             ),
@@ -127,10 +125,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // bottomSheet: Container(
-      //   child: const Text("我是底部弹出来的"),
-      //   height: 200.0,
-      // ),
     );
   }
 }

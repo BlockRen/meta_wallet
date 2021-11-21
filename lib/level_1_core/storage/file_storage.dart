@@ -8,20 +8,26 @@ class FileStorage {
   FileStorage._internal();
   static final FileStorage _singleton = FileStorage._internal();
 
-  Directory? _docDirectory;
+  Directory? _directory;
 
   // Factory Construct
   factory FileStorage() =>_singleton;
 
-  Future<File> _getJsonFile(String fileName) async {
-    _docDirectory ??= await getApplicationDocumentsDirectory();
-    File jsonFile = File(_docDirectory!.path + "/" + fileName + ".json");
+  Future<File> _getJsonFile(String fileName, String folderType) async {
+    switch (folderType) {
+      case "doc":
+        _directory ??= await getApplicationSupportDirectory();
+        break;
+      default:
+        _directory = Directory("assets");
+    }
+    File jsonFile = File(_directory!.path + "/" + fileName + ".json");
     return jsonFile;
   }
 
-  Future<bool> writeJson(Object jsonData, String fileName) async {
+  Future<bool> writeJson(Object jsonData, String fileName, {String folderType = "doc"}) async {
     try {
-      File jsonFile = await _getJsonFile(fileName);
+      File jsonFile = await _getJsonFile(fileName, folderType);
       jsonFile.writeAsStringSync(json.encode(jsonData));
     } on Exception catch (_, e) {
       debugPrint(e.toString());
@@ -30,9 +36,9 @@ class FileStorage {
     return true;
   }
 
-  Future<Object?> readJson(String fileName) async {
+  Future<Object?> readJson(String fileName, {String folderType = "doc"}) async {
     try {
-      File jsonFile = await _getJsonFile(fileName);
+      File jsonFile = await _getJsonFile(fileName, folderType);
       String jsonString = jsonFile.readAsStringSync();
       Object jsonObject = jsonDecode(jsonString);
       return jsonObject;
@@ -42,8 +48,8 @@ class FileStorage {
     }
   }
 
-  Future<bool> exists(String fileName) async {
-    File jsonFile = await _getJsonFile(fileName);
+  Future<bool> exists(String fileName, {String folderType = "doc"}) async {
+    File jsonFile = await _getJsonFile(fileName, folderType);
     return await jsonFile.exists();
   }
 }
@@ -51,4 +57,5 @@ class FileStorage {
 var fileStorage = FileStorage();
 
 // File Name
-String gStoreTrace = "store_trace";
+const String gStoreTransaction = "store_transaction";
+const String gStoreTrace = "store_trace";

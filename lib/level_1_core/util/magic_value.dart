@@ -1,4 +1,9 @@
 
+enum RefreshType {
+  topRefresh,
+  bottomRefresh
+}
+
 class MagicValue {
   MagicValue._();
 

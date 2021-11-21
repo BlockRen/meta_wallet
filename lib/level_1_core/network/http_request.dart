@@ -8,7 +8,7 @@ class HttpRequest<T> {
 
   Future<T?> jsonRequest(String urlString) async {
     try {
-      var response = await Dio().get(urlString);
+      var response = await Dio().get(urlString, options: Options(sendTimeout: 5000));
       if (response.statusCode == HttpStatus.ok) {
         return response.data;
       }

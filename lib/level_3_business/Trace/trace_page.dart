@@ -1,6 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
 import 'package:meta_wallet/level_2_ui/component/trace_cell.dart';
 import 'package:meta_wallet/level_2_ui/model/coin_model.dart';
@@ -15,17 +14,40 @@ class TracePage extends StatefulWidget {
 
 class _TracePageState extends State<TracePage> {
 
-  List coinModels = [];
+  List _coinModels = [];
+  final TraceFetch _traceFetch = TraceFetch();
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
-    //
-    TraceFetch().fetchData((List models) {
-      setState(() {
-        coinModels = models;
-      });
+    /// top refresh first in init.
+    _traceFetch.doFetchFileData((List? models) {
+      if (models == null) {
+        return;
+      }
+      setState(() => _coinModels = models);
     });
+  }
+
+  void _onRefresh() {
+    _traceFetch.doFetchOnlineData((List? models, bool isOnline) {
+      if (models == null) {
+        return;
+      }
+      setState(() => _coinModels = models);
+      _refreshController.refreshCompleted();
+    });
+  }
+
+  void _onLoading() {
+    _traceFetch.doFetchOnlineData((List? models, bool isOnline) {
+      if (models == null) {
+        return;
+      }
+      setState(() => _coinModels = models);
+      _refreshController.loadComplete();
+    }, refreshType: RefreshType.bottomRefresh);
   }
 
   @override
@@ -34,18 +56,26 @@ class _TracePageState extends State<TracePage> {
         appBar: AppBar(
           title: const Text("Trace"),
         ),
-        body: ListView.builder(
-          shrinkWrap: true,
-          itemExtent: MagicValue.cellHeightOfList,
-          itemCount: coinModels.length,
-          itemBuilder: (BuildContext context, int index) {
-            CoinModel model = coinModels[index];
-            return TraceCell(model, () {
-              // router.openPage(context, "transaction", arguments: model);
-            });
-          },
-        ),
+        body: SmartRefresher (
+          controller: _refreshController,
+          enablePullDown: true,
+          enablePullUp: true,
+          header: const WaterDropHeader(),
+          footer: const ClassicFooter(),
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemExtent: MagicValue.cellHeightOfList,
+            itemCount: _coinModels.length,
+            itemBuilder: (BuildContext context, int index) {
+              CoinModel model = _coinModels[index];
+              return TraceCell(model, () {
+                // router.openPage(context, "transaction", arguments: model);
+              });
+            },
+          ),
+        )
     );
   }
-
 }
