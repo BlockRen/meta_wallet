@@ -24,6 +24,7 @@ class _TracePageState extends State<TracePage> {
     /// top refresh first in init.
     _traceFetch.doFetchFileData((List? models) {
       if (models == null) {
+        _onRefresh();
         return;
       }
       setState(() => _coinModels = models);

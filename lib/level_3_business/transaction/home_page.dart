@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (BuildContext context, int index) {
                 /// Open the detail page
                 return HomeListCell(_transactions[index], () {
-                  router.openPage(context, "transaction");
+                  router.openPage(context, "transaction", arguments: _transactions[index]);
                 });
               },
             ),

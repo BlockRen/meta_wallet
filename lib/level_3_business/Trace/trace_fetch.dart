@@ -61,7 +61,7 @@ class TraceFetch extends FetchBase {
     fetchOnlineData((Object? data, bool isOnline) {
       /// The data can be null.
       if (data == null) {
-        onLoadFinish(null);
+        onLoadFinish(null, isOnline);
         return;
       }
       /// Clear the list if refresh type is top refresh

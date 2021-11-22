@@ -32,6 +32,15 @@ class TraceCell extends StatelessWidget {
                   height: 25,
                 )
               ),
+              Container(
+                width: 80,
+                padding: const EdgeInsets.only(left: 0, right: 20),
+                child: Text(
+                  model.name,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).primaryTextTheme.headline5,
+                ),
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
