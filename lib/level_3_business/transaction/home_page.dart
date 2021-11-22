@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List _transactions = [];
-  bool _isDark = false;
+  bool _isDark = true;
 
   void _changeMainTheme() {
     setState(() {

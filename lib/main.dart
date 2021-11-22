@@ -31,7 +31,7 @@ class _MetaAppState extends State<MetaApp> {
   @override
   void initState() {
     super.initState();
-    isDark = false;
+    isDark = true;
     eventBus.on(gThemeChange, _changeTheme);
   }
 
