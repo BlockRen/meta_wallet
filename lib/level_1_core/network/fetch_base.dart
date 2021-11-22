@@ -15,9 +15,14 @@ abstract class FetchBase {
   // indicate the last loaded data page index
   int _pageIndex = 0;
   // update the data after several seconds to avoid frequently refresh.
-  static const int _updateScope = 3000;
+  static int _updateScope = 3000;
   // record the last update time
   static int _lastUpdateTime = DateTime.now().millisecondsSinceEpoch - _updateScope;
+
+  /// provide an method to modify the update scope
+  void modifyUpdateScope(int scope) {
+    _updateScope = scope;
+  }
 
   /// read local file and return the file data. Usually used for top refresh.
   /// no need to override in a general way.
