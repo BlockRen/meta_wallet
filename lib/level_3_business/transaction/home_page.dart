@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
-import 'package:meta_wallet/level_1_core/network/http_request.dart';
 import 'package:meta_wallet/level_1_core/util/event_bus.dart';
-import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
 import 'package:meta_wallet/level_2_ui//component/home_list_cell.dart';
 import 'package:meta_wallet/level_2_ui//component/base_sheet.dart';
 import 'package:meta_wallet/level_3_business/route/page_router.dart';

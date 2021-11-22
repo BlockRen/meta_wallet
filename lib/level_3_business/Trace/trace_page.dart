@@ -34,6 +34,7 @@ class _TracePageState extends State<TracePage> {
   void _onRefresh() {
     _traceFetch.doFetchOnlineData((List? models, bool isOnline) {
       if (models == null) {
+        _refreshController.refreshFailed();
         return;
       }
       setState(() => _coinModels = models);
@@ -44,6 +45,7 @@ class _TracePageState extends State<TracePage> {
   void _onLoading() {
     _traceFetch.doFetchOnlineData((List? models, bool isOnline) {
       if (models == null) {
+        _refreshController.loadNoData();
         return;
       }
       setState(() => _coinModels = models);
