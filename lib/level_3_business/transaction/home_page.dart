@@ -5,6 +5,7 @@ import 'package:meta_wallet/level_2_ui//component/home_list_cell.dart';
 import 'package:meta_wallet/level_2_ui//component/base_sheet.dart';
 import 'package:meta_wallet/level_3_business/route/page_router.dart';
 import 'package:meta_wallet/level_3_business/transaction/receive_sheet.dart';
+import 'package:meta_wallet/level_3_business/transaction/send_sheet.dart';
 import 'package:meta_wallet/level_3_business/transaction/transaction_fetch.dart';
 
 /// 1.有状态的页面，存在State object，含状态参数；
@@ -113,7 +114,11 @@ class _HomePageState extends State<HomePage> {
                           onDisposed: () {});
                     }),
                     iconButton("Send", Icons.send, () {
-
+                      SheetBase.showAppSheet(
+                          context: context,
+                          widget: SendSheet("safdsaf", "118"),
+                          color: Theme.of(context).backgroundColor,
+                          onDisposed: () {});
                     })
                   ],
                 ),
