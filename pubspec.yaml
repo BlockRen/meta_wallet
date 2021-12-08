@@ -111,4 +111,5 @@ flutter:
 
   assets:
     - assets/QR.svg
+    - assets/avatar.jpg
     - assets/tom_morello.riv

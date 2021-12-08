@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
 import 'package:meta_wallet/level_1_core/storage/file_storage.dart';
 import 'package:meta_wallet/level_1_core/network/http_request.dart';
-import 'package:meta_wallet/level_3_business/trace/trace_fetch.dart';
+import 'package:meta_wallet/level_2_data/online_data/trace_fetch.dart';
 import 'trace_fetch_test.mocks.dart';
 
 /// flutter packages pub run build_runner build
