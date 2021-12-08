@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:meta_wallet/level_2_ui/model/account_model.dart';
+import 'package:meta_wallet/level_2_data/model/account_model.dart';
 
 class ReceiveSheet extends StatefulWidget {
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
-import 'package:meta_wallet/level_1_core/util/app_icons.dart';
-import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
+import 'package:meta_wallet/level_2_data/model/coin_model.dart';
 
-class HomeListCell extends StatelessWidget {
-  const HomeListCell(this.model, this.onTapFunction, {Key? key}) : super(key: key);
+class TraceCell extends StatelessWidget {
+  const TraceCell(this.model, this.onTapFunction, {Key? key}) : super(key: key);
 
-  final TransactionModel model;
+  final CoinModel model;
   final Function onTapFunction;
 
   @override
@@ -27,21 +26,32 @@ class HomeListCell extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
-                child: model.dealType == "sent" ?
-                Icon(AppIcons.sent, color: Theme.of(context).primaryTextTheme.headline1!.color, size: 15) :
-                Icon(AppIcons.received, color: Theme.of(context).primaryTextTheme.headline1!.color, size: 15),
+                child: Image(
+                  image: NetworkImage(model.icon),
+                  width: 25,
+                  height: 25,
+                )
+              ),
+              Container(
+                width: 80,
+                padding: const EdgeInsets.only(left: 0, right: 20),
+                child: Text(
+                  model.name,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).primaryTextTheme.headline5,
+                ),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    model.amount.toString() + "  " + model.tokenName,
+                    model.hourVolume,
                     textAlign: TextAlign.left,
                     style: Theme.of(context).primaryTextTheme.bodyText1,
                   ),
                   Text(
-                    model.dealType,
+                    model.dayVolume,
                     textAlign: TextAlign.left,
                     style: Theme.of(context).primaryTextTheme.bodyText1,
                   ),
@@ -59,12 +69,12 @@ class HomeListCell extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      model.timeString,
+                      model.price,
                       textAlign: TextAlign.right,
                       style: Theme.of(context).primaryTextTheme.bodyText1,
                     ),
                     Text(
-                      model.shortAddress,
+                      model.dayChange,
                       textAlign: TextAlign.right,
                       style: Theme.of(context).primaryTextTheme.bodyText1,
                     ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
-import 'package:meta_wallet/level_2_ui/component/trace_cell.dart';
-import 'package:meta_wallet/level_2_ui/model/coin_model.dart';
-import 'package:meta_wallet/level_3_business/Trace/trace_fetch.dart';
+import 'package:meta_wallet/level_2_data/model/coin_model.dart';
+import 'package:meta_wallet/level_2_data/online_data/trace_fetch.dart';
+import 'package:meta_wallet/level_3_business/trace/trace_cell.dart';
 
 class TracePage extends StatefulWidget {
   const TracePage({Key? key}) : super(key: key);
@@ -27,7 +27,9 @@ class _TracePageState extends State<TracePage> {
         _onRefresh();
         return;
       }
-      setState(() => _coinModels = models);
+      if (mounted) {
+        setState(() => _coinModels = models);
+      }
     });
   }
 
@@ -37,7 +39,10 @@ class _TracePageState extends State<TracePage> {
         _refreshController.refreshFailed();
         return;
       }
-      setState(() => _coinModels = models);
+      // avoid call state after page closed. Because the fetch may call back async after page close.
+      if (mounted) {
+        setState(() => _coinModels = models);
+      }
       _refreshController.refreshCompleted();
     });
   }
@@ -48,7 +53,9 @@ class _TracePageState extends State<TracePage> {
         _refreshController.loadNoData();
         return;
       }
-      setState(() => _coinModels = models);
+      if (mounted) {
+        setState(() => _coinModels = models);
+      }
       _refreshController.loadComplete();
     }, refreshType: RefreshType.bottomRefresh);
   }

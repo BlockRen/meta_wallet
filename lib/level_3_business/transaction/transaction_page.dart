@@ -1,82 +1,121 @@
 import 'package:flutter/material.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
-import 'package:meta_wallet/level_2_ui/model/transaction_model.dart';
+import 'package:meta_wallet/level_1_core/util/event_bus.dart';
+import 'package:meta_wallet/level_2_data/component/base_sheet.dart';
+import 'package:meta_wallet/level_2_data/online_data/transaction_fetch.dart';
+import 'package:meta_wallet/level_3_business/route/page_router.dart';
+import 'package:meta_wallet/level_3_business/transaction/receive_sheet.dart';
+import 'package:meta_wallet/level_3_business/transaction/send_sheet.dart';
+import 'package:meta_wallet/level_3_business/transaction/transaction_cell.dart';
 
-class TransactionPage extends StatelessWidget {
+/// 1.有状态的页面，存在State object，含状态参数；
+/// 2.调用了setState，则build会重新执行，否则不会；
+/// 3.build在每次setState之后都会调用，但不用太担心性能问题，flutter在这块处理很高效；
+
+class TransactionPage extends StatefulWidget {
   const TransactionPage({Key? key}) : super(key: key);
 
   @override
+  State<TransactionPage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<TransactionPage> {
+  List _transactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    TransactionFetch().loadTransactionInfo((List transactions) {
+      setState(() {
+        _transactions = transactions;
+      });
+    });
+  }
+
+  Widget iconButton(String text, IconData icon, VoidCallback callback) {
+    return MaterialButton(
+      textColor: Theme.of(context).primaryTextTheme.bodyText1?.color,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(icon),
+          Text(text),
+        ],
+      ),
+      onPressed: callback,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TransactionModel model = ModalRoute.of(context)!.settings.arguments as TransactionModel;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Transaction"),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.menu),
+        //   tooltip: 'Navigation',
+        //   onPressed: () => router.openPage(context, 'trace'),
+        // ),
+        title: const Text("Transactions"),
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(_isDark ? Icons.brightness_5 : Icons.brightness_4),
+        //     tooltip: 'Theme',
+        //     onPressed: () {
+        //       eventBus.emit(gThemeChange);
+        //       _changeMainTheme();
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: const Icon(Icons.perm_identity),
+        //     tooltip: 'Identity',
+        //     onPressed: () => router.openPage(context, 'avatar'),
+        //   )
+        // ],
       ),
       body: Container(
-        margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-        decoration: BoxDecoration( // 用Decoration设置圆角
-          border: Border.all(color: Theme.of(context).highlightColor, width: 0.5),
-          borderRadius: BorderRadius.circular(MagicValue.cardBorderRadius),
-          boxShadow: const [
-            BoxShadow(color: Color(0x66000000),
-              offset: Offset(1.0, 1.0),
-              blurRadius: 1.0,
-              spreadRadius: 1.0),
-            BoxShadow(color: Color(0x11000000),
-              offset: Offset(-2.0, 0.0),
-              blurRadius: 2.0,
-              spreadRadius: 1.0),
-          ],
-          color: Theme.of(context).cardColor,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Stack(
           children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(model.dealType == "sent" ? "接收者" : "发送者"),
-                  Text(model.address),
-                ],
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemExtent: MagicValue.cellHeightOfList,
+              itemCount: _transactions.length,
+              itemBuilder: (BuildContext context, int index) {
+                /// Open the detail page
+                return TransactionCell(_transactions[index], () {
+                  router.openPage(context, "transaction_detail", arguments: _transactions[index]);
+                });
+              },
             ),
-            Divider(height: 10.0, thickness: 0.8, indent: 10.0, color: Theme.of(context).dividerColor),
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Token"),
-                  Text(model.amount.toString() + "  " + model.tokenName),
-                ],
+            Align(
+              child: Container(
+                height: MagicValue.bottomTabBarHeight,
+                color: Theme.of(context).bottomAppBarColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    iconButton("Receive", Icons.qr_code, () {
+                      SheetBase.showAppSheet(
+                          context: context,
+                          widget: const ReceiveSheet(
+
+                          ),
+                          color: Theme.of(context).backgroundColor,
+                          onDisposed: () {});
+                    }),
+                    iconButton("Send", Icons.send, () {
+                      SheetBase.showAppSheet(
+                          context: context,
+                          widget: SendSheet("safdsaf", "118"),
+                          color: Theme.of(context).backgroundColor,
+                          onDisposed: () {});
+                    })
+                  ],
+                ),
               ),
-            ),
-            Divider(height: 10.0, thickness: 0.8, indent: 10.0, color: Theme.of(context).dividerColor),
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text("网络费用"),
-                  Text("0"),
-                ],
-              ),
-            ),
-            Divider(height: 10.0, thickness: 0.8, indent: 10.0, color: Theme.of(context).dividerColor),
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("时间"),
-                  Text(model.timeString),
-                ],
-              ),
-            ),
+              alignment: Alignment.bottomCenter,
+            )
           ],
         ),
       ),

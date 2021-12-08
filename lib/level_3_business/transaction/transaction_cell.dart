@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
-import 'package:meta_wallet/level_2_ui/model/coin_model.dart';
+import 'package:meta_wallet/level_1_core/util/app_icons.dart';
+import 'package:meta_wallet/level_2_data/model/transaction_model.dart';
 
-class TraceCell extends StatelessWidget {
-  const TraceCell(this.model, this.onTapFunction, {Key? key}) : super(key: key);
+class TransactionCell extends StatelessWidget {
+  const TransactionCell(this.model, this.onTapFunction, {Key? key}) : super(key: key);
 
-  final CoinModel model;
+  final TransactionModel model;
   final Function onTapFunction;
 
   @override
@@ -26,32 +27,21 @@ class TraceCell extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Image(
-                  image: NetworkImage(model.icon),
-                  width: 25,
-                  height: 25,
-                )
-              ),
-              Container(
-                width: 80,
-                padding: const EdgeInsets.only(left: 0, right: 20),
-                child: Text(
-                  model.name,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).primaryTextTheme.headline5,
-                ),
+                child: model.dealType == "sent" ?
+                Icon(AppIcons.sent, color: Theme.of(context).primaryTextTheme.headline1!.color, size: 15) :
+                Icon(AppIcons.received, color: Theme.of(context).primaryTextTheme.headline1!.color, size: 15),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    model.hourVolume,
+                    model.amount.toString() + "  " + model.tokenName,
                     textAlign: TextAlign.left,
                     style: Theme.of(context).primaryTextTheme.bodyText1,
                   ),
                   Text(
-                    model.dayVolume,
+                    model.dealType,
                     textAlign: TextAlign.left,
                     style: Theme.of(context).primaryTextTheme.bodyText1,
                   ),
@@ -69,12 +59,12 @@ class TraceCell extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      model.price,
+                      model.timeString,
                       textAlign: TextAlign.right,
                       style: Theme.of(context).primaryTextTheme.bodyText1,
                     ),
                     Text(
-                      model.dayChange,
+                      model.shortAddress,
                       textAlign: TextAlign.right,
                       style: Theme.of(context).primaryTextTheme.bodyText1,
                     ),

@@ -2,7 +2,7 @@ import 'package:meta_wallet/level_1_core/network/fetch_base.dart';
 import 'package:meta_wallet/level_1_core/network/http_request.dart';
 import 'package:meta_wallet/level_1_core/storage/file_storage.dart';
 import 'package:meta_wallet/level_1_core/util/magic_value.dart';
-import 'package:meta_wallet/level_2_ui/model/coin_model.dart';
+import 'package:meta_wallet/level_2_data/model/coin_model.dart';
 
 class TraceFetch extends FetchBase {
   TraceFetch();

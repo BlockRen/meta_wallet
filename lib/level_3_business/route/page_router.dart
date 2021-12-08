@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/level_3_business/transaction/home_page.dart';
+import 'package:meta_wallet/level_3_business/funny/funny_page.dart';
+import 'package:meta_wallet/level_3_business/home/home_page.dart';
 import 'package:meta_wallet/level_3_business/transaction/transaction_page.dart';
+import 'package:meta_wallet/level_3_business/transaction/transaction_detail.dart';
 import 'package:meta_wallet/level_3_business/avatar/avatar_page.dart';
 import 'package:meta_wallet/level_3_business/trace/trace_page.dart';
 
@@ -17,8 +19,10 @@ class PageRouter {
   //简单命名Route页面在此注册，则可以通过pushNamed方式的页面路由打开
   Map<String, WidgetBuilder> registerRoutes(BuildContext context) {
     return {
-      "/":(context) => const HomePage(title: 'Meta Wallet'),
+      "/":(context) => const HomePage(),
+      "funny":(context) => const FunnyPage(),
       "transaction":(context) => const TransactionPage(),
+      "transaction_detail":(context) => const TransactionDetail(),
       "avatar":(context) => const AvatarAnimation(),
       "trace":(context) => const TracePage(),
     };
@@ -49,8 +53,8 @@ class PageRouter {
       context,
       MaterialPageRoute(builder: (context) {
         switch (cmd) {
-          case "transaction": {
-            return const TransactionPage();
+          case "transaction_detail": {
+            return const TransactionDetail();
           }
           break;
           case "avatar": {
@@ -58,7 +62,7 @@ class PageRouter {
           }
           break;
           default: {
-            return const HomePage(title: "");
+            return const HomePage();
           }
         }
       }),
