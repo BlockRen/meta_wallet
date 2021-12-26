@@ -43,10 +43,16 @@ dependencies:
   path_provider: ^2.0.7
   # refresh widget
   pull_to_refresh: ^2.0.0
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  #
+  flame: ^1.0.0
+#    git:
+#      url: https://github.com/flame-engine/flame.git
+#      ref: -- #master
+  # tiled
+  tiled: ^0.7.3
 
 dev_dependencies:
   flutter_test:
@@ -113,3 +119,11 @@ flutter:
     - assets/QR.svg
     - assets/avatar.jpg
     - assets/tom_morello.riv
+    - assets/tiles/dmap.tmx
+    - assets/tiles/map.tmx
+    - assets/tiles/mymap.tmx
+    - assets/tiles/myset.tsx
+    - assets/map-level1.png
+    - assets/map-level2.png
+    - assets/coins.png
+    - assets/map.jpeg
