@@ -128,6 +128,7 @@ flutter:
     - assets/coins.png
     - assets/map.jpeg
     - assets/grid.png
+    - assets/grid_red.png
     - assets/tiles/emap.tmx
     - assets/tiles/empty.tsx
     - assets/images/

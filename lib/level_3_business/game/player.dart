@@ -1,7 +1,5 @@
 import 'dart:collection';
-
 import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import './direction.dart';
@@ -9,7 +7,7 @@ import 'package:flame/sprite.dart';
 
 class Player extends SpriteAnimationComponent
     with HasGameRef {
-  final double _playerSpeed = 300.0;
+  final double _playerSpeed = 50.0;
   final double _animationSpeed = 0.15;
 
   late final SpriteAnimation _runDownAnimation;
@@ -19,13 +17,10 @@ class Player extends SpriteAnimationComponent
   late final SpriteAnimation _standingAnimation;
 
   Direction direction = Direction.none;
-  Direction _collisionDirection = Direction.none;
+  final Direction _collisionDirection = Direction.none;
   bool _hasCollided = false;
 
-  Player()
-      : super(
-          size: Vector2.all(50.0),
-        ) {
+  Player() : super(size: Vector2.all(50.0)) {
     addHitbox(HitboxRectangle());
   }
 
@@ -161,29 +156,29 @@ class Player extends SpriteAnimationComponent
     // TODO: implement addHitbox
   }
 
-  @override
-  // TODO: implement hitboxes
-  UnmodifiableListView<HitboxShape> get hitboxes => throw UnimplementedError();
-
-  @override
-  bool possiblyContainsPoint(Vector2 point) {
-    // TODO: implement possiblyContainsPoint
-    throw UnimplementedError();
-  }
-
-  @override
-  bool possiblyOverlapping(HasHitboxes other) {
-    // TODO: implement possiblyOverlapping
-    throw UnimplementedError();
-  }
-
-  @override
-  void removeHitbox(HitboxShape shape) {
-    // TODO: implement removeHitbox
-  }
-
-  @override
-  void renderHitboxes(Canvas canvas, {Paint? paint}) {
-    // TODO: implement renderHitboxes
-  }
+  // @override
+  // // TODO: implement hitboxes
+  // UnmodifiableListView<HitboxShape> get hitboxes => throw UnimplementedError();
+  //
+  // @override
+  // bool possiblyContainsPoint(Vector2 point) {
+  //   // TODO: implement possiblyContainsPoint
+  //   throw UnimplementedError();
+  // }
+  //
+  // @override
+  // bool possiblyOverlapping(HasHitboxes other) {
+  //   // TODO: implement possiblyOverlapping
+  //   throw UnimplementedError();
+  // }
+  //
+  // @override
+  // void removeHitbox(HitboxShape shape) {
+  //   // TODO: implement removeHitbox
+  // }
+  //
+  // @override
+  // void renderHitboxes(Canvas canvas, {Paint? paint}) {
+  //   // TODO: implement renderHitboxes
+  // }
 }

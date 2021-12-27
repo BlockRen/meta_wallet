@@ -30,9 +30,9 @@ class _GameHomeState extends State<GameHome> {
       body: Stack(
         children: [
           GameWidget(
-            backgroundBuilder: (BuildContext context) {
-              return Image.asset('assets/map.jpeg');
-            },
+            // backgroundBuilder: (BuildContext context) {
+            //   return Image.asset('assets/map.jpeg');
+            // },
             game: game,
           ),
           Align(
@@ -59,8 +59,7 @@ class TiledGame extends FlameGame with KeyboardEvents {
     add(tiledMap);
     add(_player);
     _player.position = size / 2;
-    camera.followComponent(_player,
-        worldBounds: Rect.fromLTRB(0, 0, size.x, size.y));
+    camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, size.x, size.y));
   }
 
   void onJoypadDirectionChanged(Direction direction) {
@@ -68,10 +67,9 @@ class TiledGame extends FlameGame with KeyboardEvents {
   }
 
   @override
-  KeyEventResult onKeyEvent(
-      RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  KeyEventResult onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     final isKeyDown = event is RawKeyDownEvent;
-    Direction? keyDirection = null;
+    Direction? keyDirection;
 
     if (event.logicalKey == LogicalKeyboardKey.keyA) {
       keyDirection = Direction.left;
