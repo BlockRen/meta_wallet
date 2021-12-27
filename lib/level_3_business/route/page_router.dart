@@ -6,6 +6,7 @@ import 'package:meta_wallet/level_3_business/transaction/transaction_page.dart';
 import 'package:meta_wallet/level_3_business/transaction/transaction_detail.dart';
 import 'package:meta_wallet/level_3_business/avatar/avatar_page.dart';
 import 'package:meta_wallet/level_3_business/trace/trace_page.dart';
+import 'package:meta_wallet/level_3_business/game/game_home.dart';
 
 class PageRouter {
   //私有构造函数
@@ -26,7 +27,7 @@ class PageRouter {
       "transaction":(context) => const TransactionPage(),
       "transaction_detail":(context) => const TransactionDetail(),
       "avatar":(context) => const AvatarAnimation(),
-      "trace":(context) => const TracePage(),
+      "trace":(context) => const GameHome(), //TracePage(),
     };
   }
 
