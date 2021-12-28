@@ -126,7 +126,6 @@ flutter:
     - assets/map-level1.png
     - assets/map-level2.png
     - assets/coins.png
-    - assets/map.jpeg
     - assets/grid.png
     - assets/grid_red.png
     - assets/tiles/emap.tmx

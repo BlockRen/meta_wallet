@@ -1,27 +1,25 @@
-import 'dart:collection';
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import './direction.dart';
 import 'package:flame/sprite.dart';
 
-class Player extends SpriteAnimationComponent
-    with HasGameRef {
-  final double _playerSpeed = 50.0;
+class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Collidable {
+  final double _playerSpeed = 100.0;
   final double _animationSpeed = 0.15;
 
-  late final SpriteAnimation _runDownAnimation;
-  late final SpriteAnimation _runLeftAnimation;
-  late final SpriteAnimation _runUpAnimation;
-  late final SpriteAnimation _runRightAnimation;
-  late final SpriteAnimation _standingAnimation;
+  SpriteAnimation? _runDownAnimation;
+  SpriteAnimation? _runLeftAnimation;
+  SpriteAnimation? _runUpAnimation;
+  SpriteAnimation? _runRightAnimation;
+  SpriteAnimation? _standingAnimation;
 
   Direction direction = Direction.none;
-  final Direction _collisionDirection = Direction.none;
+  Direction _collisionDirection = Direction.none;
   bool _hasCollided = false;
 
   Player() : super(size: Vector2.all(50.0)) {
     addHitbox(HitboxRectangle());
+    collidableType = CollidableType.active;
   }
 
   @override
@@ -36,17 +34,34 @@ class Player extends SpriteAnimationComponent
     movePlayer(delta);
   }
 
-  // @override
-  // void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
-  //   super.onCollision(intersectionPoints, other);
-  //
-  //   // if (other is WorldCollidable) {
-  //   //   if (!_hasCollided) {
-  //   //     _hasCollided = true;
-  //   //     _collisionDirection = direction;
-  //   //   }
-  //   // }
-  // }
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+    super.onCollision(intersectionPoints, other);
+
+    // if (other is ScreenCollidable) {
+      if (!_hasCollided && _collisionDirection != direction) {
+        _hasCollided = true;
+        _collisionDirection = direction;
+      }
+    // } else {
+    //
+    // }
+
+    // _isWallHit = true;
+    // final firstPoint = intersectionPoints.first;
+    // // If you don't move/zoom the camera this step can be skipped
+    // final screenPoint = gameRef.projectVector(firstPoint);
+    // final screenSize = gameRef.size;
+    // if (screenPoint.x == 0) {
+    //   // Left wall (or one of the leftmost corners)
+    // } else if (screenPoint.y == 0) {
+    //   // Top wall (or one of the upper corners)
+    // } else if (screenPoint.x == screenSize.x) {
+    //   // Right wall (or one of the rightmost corners)
+    // } else if (screenPoint.y == screenSize.y) {
+    //   // Bottom wall (or one of the bottom corners)
+    // }
+  }
 
   @override
   void onCollisionEnd(Collidable other) {
@@ -59,20 +74,11 @@ class Player extends SpriteAnimationComponent
       srcSize: Vector2(29.0, 32.0),
     );
 
-    _runDownAnimation =
-        spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 4);
-
-    _runLeftAnimation =
-        spriteSheet.createAnimation(row: 1, stepTime: _animationSpeed, to: 4);
-
-    _runUpAnimation =
-        spriteSheet.createAnimation(row: 2, stepTime: _animationSpeed, to: 4);
-
-    _runRightAnimation =
-        spriteSheet.createAnimation(row: 3, stepTime: _animationSpeed, to: 4);
-
-    _standingAnimation =
-        spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 1);
+    _runDownAnimation = spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 4);
+    _runLeftAnimation = spriteSheet.createAnimation(row: 1, stepTime: _animationSpeed, to: 4);
+    _runUpAnimation = spriteSheet.createAnimation(row: 2, stepTime: _animationSpeed, to: 4);
+    _runRightAnimation = spriteSheet.createAnimation(row: 3, stepTime: _animationSpeed, to: 4);
+    _standingAnimation = spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 1);
   }
 
   void movePlayer(double delta) {
@@ -83,11 +89,29 @@ class Player extends SpriteAnimationComponent
           moveUp(delta);
         }
         break;
+      case Direction.upRight:
+        animation = _runUpAnimation;
+        moveUpRight(delta);
+        break;
+      case Direction.right:
+        if (canPlayerMoveRight()) {
+          animation = _runRightAnimation;
+          moveRight(delta);
+        }
+        break;
+      case Direction.downRight:
+        animation = _runDownAnimation;
+        moveDownRight(delta);
+        break;
       case Direction.down:
         if (canPlayerMoveDown()) {
           animation = _runDownAnimation;
           moveDown(delta);
         }
+        break;
+      case Direction.downLeft:
+        animation = _runDownAnimation;
+        moveDownLeft(delta);
         break;
       case Direction.left:
         if (canPlayerMoveLeft()) {
@@ -95,11 +119,9 @@ class Player extends SpriteAnimationComponent
           moveLeft(delta);
         }
         break;
-      case Direction.right:
-        if (canPlayerMoveRight()) {
-          animation = _runRightAnimation;
-          moveRight(delta);
-        }
+      case Direction.upLeft:
+        animation = _runUpAnimation;
+        moveUpLeft(delta);
         break;
       case Direction.none:
         animation = _standingAnimation;
@@ -139,46 +161,31 @@ class Player extends SpriteAnimationComponent
     position.add(Vector2(0, delta * -_playerSpeed));
   }
 
-  void moveDown(double delta) {
-    position.add(Vector2(0, delta * _playerSpeed));
-  }
-
-  void moveLeft(double delta) {
-    position.add(Vector2(delta * -_playerSpeed, 0));
+  void moveUpRight(double delta) {
+    position.add(Vector2(delta * _playerSpeed / 2, delta * -_playerSpeed / 2));
   }
 
   void moveRight(double delta) {
     position.add(Vector2(delta * _playerSpeed, 0));
   }
 
-  @override
-  void addHitbox(HitboxShape shape) {
-    // TODO: implement addHitbox
+  void moveDownRight(double delta) {
+    position.add(Vector2(delta * _playerSpeed / 2, delta * _playerSpeed / 2));
   }
 
-  // @override
-  // // TODO: implement hitboxes
-  // UnmodifiableListView<HitboxShape> get hitboxes => throw UnimplementedError();
-  //
-  // @override
-  // bool possiblyContainsPoint(Vector2 point) {
-  //   // TODO: implement possiblyContainsPoint
-  //   throw UnimplementedError();
-  // }
-  //
-  // @override
-  // bool possiblyOverlapping(HasHitboxes other) {
-  //   // TODO: implement possiblyOverlapping
-  //   throw UnimplementedError();
-  // }
-  //
-  // @override
-  // void removeHitbox(HitboxShape shape) {
-  //   // TODO: implement removeHitbox
-  // }
-  //
-  // @override
-  // void renderHitboxes(Canvas canvas, {Paint? paint}) {
-  //   // TODO: implement renderHitboxes
-  // }
+  void moveDown(double delta) {
+    position.add(Vector2(0, delta * _playerSpeed));
+  }
+
+  void moveDownLeft(double delta) {
+    position.add(Vector2(delta * -_playerSpeed / 2, delta * _playerSpeed / 2));
+  }
+
+  void moveLeft(double delta) {
+    position.add(Vector2(delta * -_playerSpeed, 0));
+  }
+
+  void moveUpLeft(double delta) {
+    position.add(Vector2(delta * -_playerSpeed / 2, delta * -_playerSpeed / 2));
+  }
 }

@@ -70,13 +70,37 @@ class JoypadState extends State<Joypad> {
 
   Direction getDirectionFromOffset(Offset offset) {
     if (offset.dx > 20) {
-      return Direction.right;
+      if (offset.dy < -10) {
+        return Direction.upRight;
+      } else if (offset.dy > 10) {
+        return Direction.downRight;
+      } else {
+        return Direction.right;
+      }
     } else if (offset.dx < -20) {
-      return Direction.left;
+      if (offset.dy < -10) {
+        return Direction.upLeft;
+      } else if (offset.dy > 10) {
+        return Direction.downLeft;
+      } else {
+        return Direction.left;
+      }
     } else if (offset.dy > 20) {
-      return Direction.down;
+      if (offset.dx < -10) {
+        return Direction.downLeft;
+      } else if (offset.dx > 10) {
+        return Direction.downRight;
+      } else {
+        return Direction.down;
+      }
     } else if (offset.dy < -20) {
-      return Direction.up;
+      if (offset.dx < -10) {
+        return Direction.upLeft;
+      } else if (offset.dx > 10) {
+        return Direction.upRight;
+      } else {
+        return Direction.up;
+      }
     }
     return Direction.none;
   }

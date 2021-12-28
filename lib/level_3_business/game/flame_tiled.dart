@@ -1,6 +1,6 @@
 library flame_tiled;
 
-export 'src/flame_tsx_provider.dart';
-export 'src/renderable_tile_map.dart';
-export 'src/simple_flips.dart';
-export 'src/tiled_component.dart';
+export 'flame_tiled/flame_tsx_provider.dart';
+export 'flame_tiled/renderable_tile_map.dart';
+export 'flame_tiled/simple_flips.dart';
+export 'flame_tiled/tiled_component.dart';
