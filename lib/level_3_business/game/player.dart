@@ -17,6 +17,8 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
   Direction _collisionDirection = Direction.none;
   bool _hasCollided = false;
 
+  Vector2 _prePosition = Vector2.zero();
+
   Player() : super(size: Vector2.all(50.0)) {
     addHitbox(HitboxRectangle());
     collidableType = CollidableType.active;
@@ -39,18 +41,25 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
     super.onCollision(intersectionPoints, other);
 
     // if (other is ScreenCollidable) {
-      if (!_hasCollided && _collisionDirection != direction) {
+    //   if (!_hasCollided && _collisionDirection != direction) {
         _hasCollided = true;
-        _collisionDirection = direction;
-      }
+      // }
     // } else {
     //
     // }
 
+    _prePosition = position;
+
+    if (_collisionDirection == Direction.none) {
+      _collisionDirection = direction;
+    }
+
     // _isWallHit = true;
+    // // intersectionPoints.length
     // final firstPoint = intersectionPoints.first;
+    //
     // // If you don't move/zoom the camera this step can be skipped
-    // final screenPoint = gameRef.projectVector(firstPoint);
+    // final screenPoint = gameRef.
     // final screenSize = gameRef.size;
     // if (screenPoint.x == 0) {
     //   // Left wall (or one of the leftmost corners)
@@ -66,6 +75,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
   @override
   void onCollisionEnd(Collidable other) {
     _hasCollided = false;
+    _collisionDirection = Direction.none;
   }
 
   Future<void> _loadAnimations() async {
@@ -82,42 +92,38 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
   }
 
   void movePlayer(double delta) {
+    if (!canPlayerMove()) {
+      position = _prePosition;
+      return;
+    }
     switch (direction) {
       case Direction.up:
-        if (canPlayerMoveUp()) {
-          animation = _runUpAnimation;
-          moveUp(delta);
-        }
+        animation = _runUpAnimation;
+        moveUp(delta);
         break;
       case Direction.upRight:
         animation = _runUpAnimation;
         moveUpRight(delta);
         break;
       case Direction.right:
-        if (canPlayerMoveRight()) {
-          animation = _runRightAnimation;
-          moveRight(delta);
-        }
+        animation = _runRightAnimation;
+        moveRight(delta);
         break;
       case Direction.downRight:
         animation = _runDownAnimation;
         moveDownRight(delta);
         break;
       case Direction.down:
-        if (canPlayerMoveDown()) {
-          animation = _runDownAnimation;
-          moveDown(delta);
-        }
+        animation = _runDownAnimation;
+        moveDown(delta);
         break;
       case Direction.downLeft:
         animation = _runDownAnimation;
         moveDownLeft(delta);
         break;
       case Direction.left:
-        if (canPlayerMoveLeft()) {
-          animation = _runLeftAnimation;
-          moveLeft(delta);
-        }
+        animation = _runLeftAnimation;
+        moveLeft(delta);
         break;
       case Direction.upLeft:
         animation = _runUpAnimation;
@@ -129,32 +135,35 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
     }
   }
 
-  bool canPlayerMoveUp() {
-    if (_hasCollided && _collisionDirection == Direction.up) {
+  bool canPlayerMove() {
+    if (_hasCollided && nearDirection(direction)) {
       return false;
     }
     return true;
   }
 
-  bool canPlayerMoveDown() {
-    if (_hasCollided && _collisionDirection == Direction.down) {
-      return false;
+  bool nearDirection(Direction dir) {
+    switch (_collisionDirection) {
+      case Direction.up:
+        return (dir==Direction.left || dir==Direction.upLeft || dir==Direction.up || dir==Direction.upRight || dir==Direction.right);
+      case Direction.upRight:
+        return (dir==Direction.upLeft || dir==Direction.up || dir==Direction.upRight || dir==Direction.right || dir==Direction.downRight);
+      case Direction.right:
+        return (dir==Direction.up || dir==Direction.upRight || dir==Direction.right || dir==Direction.downRight || dir==Direction.down);
+      case Direction.downRight:
+        return (dir==Direction.upRight || dir==Direction.right || dir==Direction.downRight || dir==Direction.down || dir==Direction.downLeft);
+      case Direction.down:
+        return (dir==Direction.right || dir==Direction.downRight || dir==Direction.down || dir==Direction.downLeft || dir==Direction.left);
+      case Direction.downLeft:
+        return (dir==Direction.downRight || dir==Direction.down || dir==Direction.downLeft || dir==Direction.left || dir==Direction.upLeft);
+      case Direction.left:
+        return (dir==Direction.down || dir==Direction.downLeft || dir==Direction.left || dir==Direction.upLeft || dir==Direction.up);
+      case Direction.upLeft:
+        return (dir==Direction.downLeft || dir==Direction.left || dir==Direction.upLeft || dir==Direction.up || dir==Direction.upRight);
+      case Direction.none:
+        break;
     }
-    return true;
-  }
-
-  bool canPlayerMoveLeft() {
-    if (_hasCollided && _collisionDirection == Direction.left) {
-      return false;
-    }
-    return true;
-  }
-
-  bool canPlayerMoveRight() {
-    if (_hasCollided && _collisionDirection == Direction.right) {
-      return false;
-    }
-    return true;
+    return false;
   }
 
   void moveUp(double delta) {
@@ -162,7 +171,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
   }
 
   void moveUpRight(double delta) {
-    position.add(Vector2(delta * _playerSpeed / 2, delta * -_playerSpeed / 2));
+    position.add(Vector2(delta * _playerSpeed / 1.8, delta * -_playerSpeed / 1.8));
   }
 
   void moveRight(double delta) {
@@ -170,7 +179,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
   }
 
   void moveDownRight(double delta) {
-    position.add(Vector2(delta * _playerSpeed / 2, delta * _playerSpeed / 2));
+    position.add(Vector2(delta * _playerSpeed / 1.8, delta * _playerSpeed / 1.8));
   }
 
   void moveDown(double delta) {
@@ -178,7 +187,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
   }
 
   void moveDownLeft(double delta) {
-    position.add(Vector2(delta * -_playerSpeed / 2, delta * _playerSpeed / 2));
+    position.add(Vector2(delta * -_playerSpeed / 1.8, delta * _playerSpeed / 1.8));
   }
 
   void moveLeft(double delta) {
@@ -186,6 +195,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, HasHitboxes, Coll
   }
 
   void moveUpLeft(double delta) {
-    position.add(Vector2(delta * -_playerSpeed / 2, delta * -_playerSpeed / 2));
+    position.add(Vector2(delta * -_playerSpeed / 1.8, delta * -_playerSpeed / 1.8));
   }
 }

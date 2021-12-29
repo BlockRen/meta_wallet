@@ -59,6 +59,7 @@ class _GameHomeState extends State<GameHome> {
 class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
   final Player _player = Player();
   final World _world = World();
+  final EggHome _eggHome = EggHome();
 
   @override
   Future<void> onLoad() async {
@@ -73,7 +74,9 @@ class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
     add(image);
 
     add(tiledMap);
-    // await add(_world);
+
+    int? dd = tiledMap.tileMap.map.nextObjectId;
+
     add(_player);
     _player.position = Vector2(vec.x / 2, vec.y / 2);
     camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
@@ -81,10 +84,16 @@ class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
     final screenCollidable = ScreenCollidable();
     add(screenCollidable);
 
-    // _world
-    //   ..position = Vector2(0, 0)
-    //   ..width = 37 * 16
-    //   ..height = 37 * 16;
+    await add(_world);
+    _world
+      ..position = Vector2(0, 0)
+      ..width = 20 * 16
+      ..height = 20 * 16;
+    await add(_eggHome);
+    _eggHome
+      ..position = Vector2(130, 200)
+      ..width = 20 * 16
+      ..height = 25 * 16;
   }
 
   void onJoypadDirectionChanged(Direction direction) {

@@ -14,3 +14,11 @@ class World extends PositionComponent with HasGameRef, HasHitboxes, Collidable {
     collidableType = CollidableType.passive;
   }
 }
+
+class EggHome extends PositionComponent with HasGameRef, HasHitboxes, Collidable {
+  EggHome() {
+    final shape = HitboxCircle();
+    addHitbox(shape);
+    collidableType = CollidableType.passive;
+  }
+}
