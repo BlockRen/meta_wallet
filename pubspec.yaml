@@ -52,7 +52,9 @@ dependencies:
 #      url: https://github.com/flame-engine/flame.git
 #      ref: -- #master
   # tiled
+  flame_tiled: ^1.0.0
   tiled: ^0.7.3
+  #
 
 dev_dependencies:
   flutter_test:

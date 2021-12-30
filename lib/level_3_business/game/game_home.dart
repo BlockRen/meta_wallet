@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
-import 'package:meta_wallet/level_3_business/game/flame_tiled.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 import 'package:meta_wallet/level_3_business/game/joypad.dart';
 import 'package:meta_wallet/level_3_business/game/player.dart';
 import 'package:meta_wallet/level_3_business/game/direction.dart';
 import 'package:meta_wallet/level_3_business/game/world.dart';
-import 'package:tiled/tiled.dart' show ObjectGroup, TiledObject;
 
 
 class GameHome extends StatefulWidget {
@@ -59,14 +58,12 @@ class _GameHomeState extends State<GameHome> {
 class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
   final Player _player = Player();
   final World _world = World();
-  final EggHome _eggHome = EggHome();
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
     final tiledMap = await TiledComponent.load('emap.tmx', Vector2.all(16));
-    // final tiledMap = _world.tiled(); // 可能会有问题，因为内部的_tiled是异步load
-    // Rect rect = const Rect.fromLTWH(0, 0, 16*34, 16*73);
+
     Vector2 vec = Vector2(16*34, 16*73);
 
     final bg = await Sprite.load('map.jpeg');
@@ -75,25 +72,13 @@ class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
 
     add(tiledMap);
 
-    int? dd = tiledMap.tileMap.map.nextObjectId;
+    final objectGroup = tiledMap.tileMap.getObjectGroupFromLayer('ObjectLayer');
+    _world.addCollidables(objectGroup);
+    add(_world);
 
     add(_player);
     _player.position = Vector2(vec.x / 2, vec.y / 2);
     camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
-
-    final screenCollidable = ScreenCollidable();
-    add(screenCollidable);
-
-    await add(_world);
-    _world
-      ..position = Vector2(0, 0)
-      ..width = 20 * 16
-      ..height = 20 * 16;
-    await add(_eggHome);
-    _eggHome
-      ..position = Vector2(130, 200)
-      ..width = 20 * 16
-      ..height = 25 * 16;
   }
 
   void onJoypadDirectionChanged(Direction direction) {
