@@ -32,8 +32,6 @@ dependencies:
 
   # aaron intl
   intl: ^0.17.0
-  # rive animation
-  rive: ^0.7.33
   # SVG
   flutter_svg: ^0.23.0+1
   # http
@@ -54,7 +52,9 @@ dependencies:
   # tiled
   flame_tiled: ^1.0.0
   tiled: ^0.7.3
-  #
+  # rive animation
+  flame_rive: ^1.0.0
+  rive: ^0.7.33
 
 dev_dependencies:
   flutter_test:
@@ -133,3 +133,4 @@ flutter:
     - assets/tiles/emap.tmx
     - assets/tiles/empty.tsx
     - assets/images/
+    - assets/rives/

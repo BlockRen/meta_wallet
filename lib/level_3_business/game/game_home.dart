@@ -9,7 +9,8 @@ import 'package:meta_wallet/level_3_business/game/joypad.dart';
 import 'package:meta_wallet/level_3_business/game/player.dart';
 import 'package:meta_wallet/level_3_business/game/direction.dart';
 import 'package:meta_wallet/level_3_business/game/world.dart';
-
+import 'package:rive/rive.dart';
+import 'package:flame_rive/flame_rive.dart';
 
 class GameHome extends StatefulWidget {
   const GameHome({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class _GameHomeState extends State<GameHome> {
   }
 }
 
-class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
+class TiledGame extends FlameGame with HasCollidables, HasTappables, KeyboardEvents {
   final Player _player = Player();
   final World _world = World();
 
@@ -79,6 +80,9 @@ class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
     add(_player);
     _player.position = Vector2(vec.x / 2, vec.y / 2);
     camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
+
+    final skillsArtboard = await loadArtboard(RiveFile.asset('assets/rives/bluebird.riv'));
+    add(SkillsAnimationComponent(skillsArtboard));
   }
 
   void onJoypadDirectionChanged(Direction direction) {
@@ -107,5 +111,40 @@ class TiledGame extends FlameGame with HasCollidables, KeyboardEvents {
     }
 
     return super.onKeyEvent(event, keysPressed);
+  }
+}
+
+
+class SkillsAnimationComponent extends RiveComponent with Tappable {
+  SkillsAnimationComponent(Artboard artboard)
+      : super(
+    artboard: artboard,
+    size: Vector2.all(550),
+  );
+
+  SMIInput<double>? _levelInput;
+
+  @override
+  Future<void>? onLoad() {
+    final controller = StateMachineController.fromArtboard(
+      artboard,
+      "Designer's Test",
+    );
+    if (controller != null) {
+      artboard.addController(controller);
+      _levelInput = controller.findInput<double>('Level');
+      _levelInput?.value = 0;
+    }
+    return super.onLoad();
+  }
+
+  @override
+  bool onTapDown(TapDownInfo info) {
+    final levelInput = _levelInput;
+    if (levelInput == null) {
+      return false;
+    }
+    levelInput.value = (levelInput.value + 1) % 3;
+    return true;
   }
 }
