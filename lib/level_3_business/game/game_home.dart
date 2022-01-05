@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flame/input.dart';
+import 'package:flame_rive/flame_rive.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -10,7 +11,8 @@ import 'package:meta_wallet/level_3_business/game/player.dart';
 import 'package:meta_wallet/level_3_business/game/direction.dart';
 import 'package:meta_wallet/level_3_business/game/world.dart';
 import 'package:rive/rive.dart';
-import 'package:flame_rive/flame_rive.dart';
+
+import 'character.dart';
 
 class GameHome extends StatefulWidget {
   const GameHome({Key? key}) : super(key: key);
@@ -57,7 +59,8 @@ class _GameHomeState extends State<GameHome> {
 }
 
 class TiledGame extends FlameGame with HasCollidables, HasTappables, KeyboardEvents {
-  final Player _player = Player();
+  // final Player _player = Player();
+  late CharacterComponent _character;
   final World _world = World();
 
   @override
@@ -77,16 +80,19 @@ class TiledGame extends FlameGame with HasCollidables, HasTappables, KeyboardEve
     _world.addCollidables(objectGroup);
     add(_world);
 
-    add(_player);
-    _player.position = Vector2(vec.x / 2, vec.y / 2);
-    camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
+    // add(_player);
+    // _player.position = Vector2(vec.x / 2, vec.y / 2);
+    // camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
 
-    final skillsArtboard = await loadArtboard(RiveFile.asset('assets/rives/bluebird.riv'));
-    add(SkillsAnimationComponent(skillsArtboard));
+    final characterArtboard = await loadArtboard(RiveFile.asset('assets/rives/bluebird.riv'));
+    _character = CharacterComponent(characterArtboard);
+    _character.position = Vector2(vec.x / 2, vec.y / 2);
+    add(_character);
+    camera.followComponent(_character, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
   }
 
   void onJoypadDirectionChanged(Direction direction) {
-    _player.direction = direction;
+    _character.direction = direction;
   }
 
   @override
@@ -105,46 +111,11 @@ class TiledGame extends FlameGame with HasCollidables, HasTappables, KeyboardEve
     }
 
     if (isKeyDown && keyDirection != null) {
-      _player.direction = keyDirection;
-    } else if (_player.direction == keyDirection) {
-      _player.direction = Direction.none;
+      _character.direction = keyDirection;
+    } else if (_character.direction == keyDirection) {
+      _character.direction = Direction.none;
     }
 
     return super.onKeyEvent(event, keysPressed);
-  }
-}
-
-
-class SkillsAnimationComponent extends RiveComponent with Tappable {
-  SkillsAnimationComponent(Artboard artboard)
-      : super(
-    artboard: artboard,
-    size: Vector2.all(550),
-  );
-
-  SMIInput<double>? _levelInput;
-
-  @override
-  Future<void>? onLoad() {
-    final controller = StateMachineController.fromArtboard(
-      artboard,
-      "Designer's Test",
-    );
-    if (controller != null) {
-      artboard.addController(controller);
-      _levelInput = controller.findInput<double>('Level');
-      _levelInput?.value = 0;
-    }
-    return super.onLoad();
-  }
-
-  @override
-  bool onTapDown(TapDownInfo info) {
-    final levelInput = _levelInput;
-    if (levelInput == null) {
-      return false;
-    }
-    levelInput.value = (levelInput.value + 1) % 3;
-    return true;
   }
 }
