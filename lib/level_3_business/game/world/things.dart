@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:meta_wallet/level_3_business/game/world/boundaries.dart';
 import 'package:tiled/tiled.dart';
 
 class CollidablePolygon extends PositionComponent with HasHitboxes, Collidable {
@@ -37,22 +38,22 @@ class CollidablePolygon extends PositionComponent with HasHitboxes, Collidable {
   }
 }
 
-class World extends PositionComponent with HasGameRef, HasHitboxes, Collidable {
-  World() {
-    collidableType = CollidableType.passive;
-    final screenCollidable = ScreenCollidable();
-    add(screenCollidable);
-  }
+class Things {
+  Things();
 
-  void addCollidables(ObjectGroup group) {
-    for (final obj in group.objects) {
-      if (obj.isPolygon) {
-        add(CollidablePolygon(obj));
-      } else if (obj.isRectangle) {
+  // List createBoundaries() {
+    // return Boundaries..createBoundaries();
+  // }
 
-      } else if (obj.isEllipse) {
-
-      }
-    }
-  }
+  // void addCollidables(ObjectGroup group) {
+  //   for (final obj in group.objects) {
+  //     if (obj.isPolygon) {
+  //       add(CollidablePolygon(obj));
+  //     } else if (obj.isRectangle) {
+  //
+  //     } else if (obj.isEllipse) {
+  //
+  //     }
+  //   }
+  // }
 }

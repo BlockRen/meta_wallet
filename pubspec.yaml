@@ -55,6 +55,9 @@ dependencies:
   # rive animation
   flame_rive: ^1.0.0
   rive: ^0.7.33
+  # forge2D
+  flame_forge2d: ^0.8.3
+  forge2d: ^0.8.1
 
 dev_dependencies:
   flutter_test:
