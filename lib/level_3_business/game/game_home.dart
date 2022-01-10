@@ -54,8 +54,13 @@ class _GameHomeState extends State<GameHome> {
 
 class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
   // final Player _player = Player();
-  late CharacterComponent _character;
+  late Character _character;
   final Things _things = Things();
+
+  TiledGame() : super(
+    gravity: Vector2.zero(),
+    zoom: 1
+  );
 
   @override
   Future<void> onLoad() async {
@@ -75,17 +80,18 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
     final tiledMap = await TiledComponent.load('emap.tmx', Vector2.all(16));
     add(tiledMap);
 
-    final objectGroup = tiledMap.tileMap.getObjectGroupFromLayer('ObjectLayer');
+    // final objectGroup = tiledMap.tileMap.getObjectGroupFromLayer('ObjectLayer');
     // _things.addCollidables(objectGroup);
     // add(_things);
 
     // character
-    final characterArtboard = await loadArtboard(RiveFile.asset('assets/rives/bluebird.riv'));
-    _character = CharacterComponent(characterArtboard);
-    _character.position = Vector2(vec.x / 2, vec.y / 2);
+    final artBoard = await loadArtboard(RiveFile.asset('assets/rives/bluebird.riv'));
+    RiveComponent riveComponent = RiveComponent(artboard: artBoard);
+    final initPosition = Vector2(vec.x / 2, vec.y / 2);
+    _character = Character(riveComponent, initPosition);
     add(_character);
     // camera follow the character
-    camera.followComponent(_character, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
+    camera.followComponent(_character.riveComponent, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
   }
 
   void onJoypadDirectionChanged(Direction direction) {
