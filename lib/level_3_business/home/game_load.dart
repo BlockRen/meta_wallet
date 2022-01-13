@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta_wallet/level_3_business/nft/test_grid_list.dart';
 import 'package:meta_wallet/level_3_business/route/page_router.dart';
 
 class GameLoad extends StatefulWidget {
@@ -11,12 +10,9 @@ class GameLoad extends StatefulWidget {
 
 class _GameLoadState extends State<GameLoad> {
 
-  late final List _news;
-
   @override
   void initState() {
     super.initState();
-    _news = newsList;
   }
 
   @override

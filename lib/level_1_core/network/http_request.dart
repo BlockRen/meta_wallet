@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:meta_wallet/level_1_core/storage/file_storage.dart';
 
@@ -14,16 +15,21 @@ enum FileType {
 typedef DownloadProgress = void Function(double progress);
 
 class HttpRequest<T> {
-  final Dio _dio = Dio();
 
-  /// avoid the certificate impact.
-  HttpRequest() {
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
-      client.badCertificateCallback=(cert, host, port) {
-        return true;
+  /// CLIENT
+  static Dio _dioClient() {
+    Dio dio = Dio();
+    /// The web only support BrowserHttpClientAdapter and not support DefaultHttpClientAdapter
+    if(!kIsWeb) {
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+        client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+        return client;
       };
-    };
+    }
+    return dio;
   }
+
+  static Dio get _dio => _dioClient();
 
   Future<T?> jsonRequest(String urlString) async {
     try {
