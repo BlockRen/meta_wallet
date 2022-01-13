@@ -66,15 +66,15 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // world boundaries
-    Vector2 gameSize = screenToWorld(camera.viewport.effectiveSize);
-    addAll(Boundaries.createBoundaries(gameSize));
-
     Vector2 vec = Vector2(16*34, 16*73);
     // background image
     final bg = await Sprite.load('map.jpeg');
     final image = SpriteComponent(size: vec, sprite: bg);
     add(image);
+
+    // world boundaries
+    Vector2 gameSize = screenToWorld(vec);
+    addAll(Boundaries.createBoundaries(gameSize));
 
     // tiled map
     final tiledMap = await TiledComponent.load('emap.tmx', Vector2.all(16));
@@ -84,9 +84,13 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
     // _things.addCollidables(objectGroup);
     // add(_things);
 
-    final position = Vector2(vec.x / 5, vec.y / 2);
+    Vector2 position = Vector2(vec.x / 5, vec.y / 2);
     final ball = Football(position, size: Vector2(15, 15));
     add(ball);
+
+    position = Vector2(vec.x / 2, vec.y / 3);
+    final ball2 = Football(position, size: Vector2(15, 15));
+    add(ball2);
 
     // character
     String filePath = await fileStorage.storagePath("rive") + "character.riv";
