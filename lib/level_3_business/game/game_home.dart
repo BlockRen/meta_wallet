@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame_forge2d/forge2d_game.dart';
+import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 import 'package:forge2d/forge2d.dart';
 import 'character.dart';
@@ -52,7 +53,7 @@ class _GameHomeState extends State<GameHome> {
   }
 }
 
-class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
+class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
   // final Player _player = Player();
   late Character _character;
   // final Things _things = Things();
@@ -85,11 +86,11 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
     // add(_things);
 
     Vector2 position = Vector2(vec.x / 5, vec.y / 2);
-    final ball = Football(position, size: Vector2(15, 15));
+    final ball = Football(position, size: Vector2(25, 25));
     add(ball);
 
     position = Vector2(vec.x / 2, vec.y / 3);
-    final ball2 = Football(position, size: Vector2(15, 15));
+    final ball2 = Football(position, size: Vector2(25, 25));
     add(ball2);
 
     // character
@@ -105,5 +106,29 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
 
   void onJoypadDirectionChanged(Direction direction) {
     _character.direction = direction;
+  }
+
+  @override
+  KeyEventResult onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    if (keysPressed.contains(LogicalKeyboardKey.keyW) && keysPressed.contains(LogicalKeyboardKey.keyD)) {
+      _character.direction = Direction.upRight;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyD) && keysPressed.contains(LogicalKeyboardKey.keyS)) {
+      _character.direction = Direction.downRight;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyS) && keysPressed.contains(LogicalKeyboardKey.keyA)) {
+      _character.direction = Direction.downLeft;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyA) && keysPressed.contains(LogicalKeyboardKey.keyW)) {
+      _character.direction = Direction.upLeft;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyW)) {
+      _character.direction = Direction.up;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyD)) {
+      _character.direction = Direction.right;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyS)) {
+      _character.direction = Direction.down;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyA)) {
+      _character.direction = Direction.left;
+    } else {
+      _character.direction = Direction.none;
+    }ß
+    return super.onKeyEvent(event, keysPressed);
   }
 }
