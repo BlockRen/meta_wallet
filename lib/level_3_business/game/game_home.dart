@@ -55,7 +55,7 @@ class _GameHomeState extends State<GameHome> {
 class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
   // final Player _player = Player();
   late Character _character;
-  final Things _things = Things();
+  // final Things _things = Things();
 
   TiledGame() : super(
     gravity: Vector2.zero(),
@@ -83,6 +83,8 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
     // final objectGroup = tiledMap.tileMap.getObjectGroupFromLayer('ObjectLayer');
     // _things.addCollidables(objectGroup);
     // add(_things);
+    final position = Vector2(vec.x / 3, vec.y / 2);
+    add(Football(position, size: Vector2(10, 15)));
 
     // character
     final artBoard = await loadArtboard(RiveFile.asset('assets/rives/bluebird.riv'));

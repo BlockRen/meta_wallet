@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meta_wallet/level_1_core/network/http_request.dart';
 import 'package:meta_wallet/level_3_business/funny/funny_page.dart';
 import 'package:meta_wallet/level_3_business/home/home_drawer.dart';
 import 'package:meta_wallet/level_3_business/route/page_router.dart';
@@ -14,6 +15,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    HttpRequest().downloadFile("http://xxx", "character");
+
     return Scaffold(
       appBar: AppBar(
         // leading: IconButton(

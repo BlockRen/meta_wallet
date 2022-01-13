@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
-import 'package:meta_wallet/level_3_business/game/world/boundaries.dart';
+import 'package:flame_forge2d/flame_forge2d.dart';
+import 'package:flame_forge2d/position_body_component.dart';
 import 'package:tiled/tiled.dart';
 
 class CollidablePolygon extends PositionComponent with HasHitboxes, Collidable {
@@ -38,22 +39,32 @@ class CollidablePolygon extends PositionComponent with HasHitboxes, Collidable {
   }
 }
 
-class Things {
-  Things();
+class Football extends PositionBodyComponent {
+  final Vector2 position;
 
-  // List createBoundaries() {
-    // return Boundaries..createBoundaries();
-  // }
+  Football(
+    this.position, {
+      Vector2? size,
+  }) : super(size: size ?? Vector2(3, 3));
 
-  // void addCollidables(ObjectGroup group) {
-  //   for (final obj in group.objects) {
-  //     if (obj.isPolygon) {
-  //       add(CollidablePolygon(obj));
-  //     } else if (obj.isRectangle) {
-  //
-  //     } else if (obj.isEllipse) {
-  //
-  //     }
-  //   }
-  // }
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    final sprite = await gameRef.loadSprite('soccer.png');
+    positionComponent = SpriteComponent(sprite: sprite, size: size);
+  }
+
+  @override
+  Body createBody() {
+    final shape = PolygonShape()..setAsBoxXY(2, 2);
+    final fixtureDef = FixtureDef(shape)
+      ..restitution = 0.2
+      ..density = 1.0
+      ..friction = 0.4;
+    final bodyDef = BodyDef()
+      ..type = BodyType.dynamic
+      ..position = position;
+    final body = world.createBody(bodyDef)..createFixture(fixtureDef);
+    return body;
+  }
 }

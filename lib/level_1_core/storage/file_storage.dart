@@ -52,6 +52,13 @@ class FileStorage {
     File jsonFile = await _getJsonFile(fileName, folderType);
     return await jsonFile.exists();
   }
+
+  ///
+  Future<String> storagePath(String? subPath) async {
+    Directory dir = await getLibraryDirectory();
+    String path = (subPath != null) ? (dir.path + "/" + subPath) : dir.path;
+    return path;
+  }
 }
 
 var fileStorage = FileStorage();

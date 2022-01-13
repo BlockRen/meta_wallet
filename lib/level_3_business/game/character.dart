@@ -36,7 +36,7 @@ class Character extends RiveBodyComponent {
 
   @override
   Body createBody() {
-    final shape = PolygonShape()..setAsBoxXY(50, 60);
+    final shape = PolygonShape()..setAsBoxXY(5, 6);
     final fixtureDef = FixtureDef(shape)
       ..restitution = 0.2
       ..density = 1.0
