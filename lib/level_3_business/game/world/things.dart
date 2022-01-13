@@ -45,7 +45,7 @@ class Football extends PositionBodyComponent {
   Football(
     this.position, {
       Vector2? size,
-  }) : super(size: size ?? Vector2(3, 3));
+  }) : super(size: size ?? Vector2(10, 10));
 
   @override
   Future<void> onLoad() async {
@@ -58,12 +58,13 @@ class Football extends PositionBodyComponent {
   Body createBody() {
     final shape = PolygonShape()..setAsBoxXY(2, 2);
     final fixtureDef = FixtureDef(shape)
-      ..restitution = 0.2
-      ..density = 1.0
-      ..friction = 0.4;
+      ..restitution = 0.1
+      ..density = 0.5
+      ..friction = 0.2;
     final bodyDef = BodyDef()
       ..type = BodyType.dynamic
-      ..position = position;
+      ..linearDamping = 0.2
+      ..position = Vector2(position.x, -position.y);
     final body = world.createBody(bodyDef)..createFixture(fixtureDef);
     return body;
   }

@@ -83,8 +83,10 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
     // final objectGroup = tiledMap.tileMap.getObjectGroupFromLayer('ObjectLayer');
     // _things.addCollidables(objectGroup);
     // add(_things);
-    final position = Vector2(vec.x / 3, vec.y / 2);
-    add(Football(position, size: Vector2(10, 15)));
+
+    final position = Vector2(vec.x / 5, vec.y / 2);
+    final ball = Football(position, size: Vector2(15, 15));
+    add(ball);
 
     // character
     String filePath = await fileStorage.storagePath("rive") + "character.riv";

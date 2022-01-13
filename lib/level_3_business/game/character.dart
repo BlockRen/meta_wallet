@@ -16,7 +16,7 @@ class Character extends RiveBodyComponent {
   );
 
   SMIInput<double>? _levelInput;
-  final double _moveSpeed = 15.0;
+  final double _moveSpeed = 50.0;
   Direction direction = Direction.none;
   // Direction _collisionDirection = Direction.none;
   // bool _hasCollided = false;
@@ -36,13 +36,15 @@ class Character extends RiveBodyComponent {
 
   @override
   Body createBody() {
-    final shape = PolygonShape()..setAsBoxXY(5, 6);
+    final shape = PolygonShape()..setAsBoxXY(15, 15);
     final fixtureDef = FixtureDef(shape)
       ..restitution = 0.2
-      ..density = 1.0
-      ..friction = 0.4;
+      ..density = 5.0
+      ..friction = 0.95;
     final bodyDef = BodyDef()
       ..type = BodyType.dynamic
+      ..fixedRotation = true
+      ..linearDamping = 5.0
       /// the origin of coordinates of forge2d is the top-left point of screen, but the flame's is
       /// bottom-left, so the y-value must be the opposite.
       ..position = Vector2(position.x, -position.y);
