@@ -55,8 +55,16 @@ class FileStorage {
 
   ///
   Future<String> storagePath(String? subPath) async {
-    Directory dir = await getLibraryDirectory();
-    String path = (subPath != null) ? (dir.path + "/" + subPath) : dir.path;
+    Directory? dir;
+    if (Platform.isIOS) {
+      dir = await getLibraryDirectory();
+    } else if (Platform.isAndroid) {
+      dir = await getExternalStorageDirectory();
+    }
+    String path = "";
+    if (dir != null) {
+      path = (subPath != null) ? (dir.path + "/" + subPath) : dir.path;
+    }
     return path;
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meta_wallet/level_1_core/network/http_request.dart';
-import 'package:meta_wallet/level_3_business/funny/funny_page.dart';
+import 'package:meta_wallet/level_3_business/home/game_load.dart';
 import 'package:meta_wallet/level_3_business/home/home_drawer.dart';
 import 'package:meta_wallet/level_3_business/route/page_router.dart';
 
@@ -16,7 +16,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    HttpRequest().downloadFile("http://xxx", "character");
+    HttpRequest().downloadFile("http://www.aaronview.cn/design/res/character.riv", "character",
+      onProgress: (double progress) {
+        debugPrint("Download Progress: " + progress.toString());
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -27,6 +30,11 @@ class _HomePageState extends State<HomePage> {
         // ),
         title: const Text("Meta Planet"),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add_reaction),
+            tooltip: 'Funny',
+            onPressed: () => router.openPage(context, 'funny'),
+          ),
           IconButton(
             icon: const Icon(Icons.add_reaction_sharp),
             tooltip: 'Nft',
@@ -40,7 +48,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: const HomeDrawer(),
-      body: const FunnyPage(),
+      body: const GameLoad(),
     );
   }
 }

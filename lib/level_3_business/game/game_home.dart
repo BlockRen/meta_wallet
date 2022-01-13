@@ -5,12 +5,12 @@ import 'package:flame_rive/flame_rive.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flame_forge2d/body_component.dart';
 import 'package:flame_forge2d/forge2d_game.dart';
-import 'package:meta_wallet/level_3_business/game/world/boundaries.dart';
 import 'package:rive/rive.dart';
 import 'package:forge2d/forge2d.dart';
 import 'character.dart';
+import 'package:meta_wallet/level_1_core/storage/file_storage.dart';
+import 'package:meta_wallet/level_3_business/game/world/boundaries.dart';
 import 'package:meta_wallet/level_3_business/game/world/things.dart';
 import 'package:meta_wallet/level_3_business/game/joypad.dart';
 import 'package:meta_wallet/level_3_business/game/direction.dart';
@@ -87,7 +87,8 @@ class TiledGame extends Forge2DGame with HasTappables { // KeyboardEvents
     add(Football(position, size: Vector2(10, 15)));
 
     // character
-    final artBoard = await loadArtboard(RiveFile.asset('assets/rives/bluebird.riv'));
+    String filePath = await fileStorage.storagePath("rive") + "character.riv";
+    final artBoard = await loadArtboard(RiveFile.file(filePath));
     RiveComponent riveComponent = RiveComponent(artboard: artBoard);
     final initPosition = Vector2(vec.x / 2, vec.y / 2);
     _character = Character(riveComponent, initPosition);

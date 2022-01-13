@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meta_wallet/level_3_business/funny/funny_page.dart';
+import 'package:meta_wallet/level_3_business/home/game_load.dart';
 import 'package:meta_wallet/level_3_business/home/home_page.dart';
 import 'package:meta_wallet/level_3_business/nft/nft_page.dart';
 import 'package:meta_wallet/level_3_business/transaction/transaction_page.dart';
@@ -27,7 +28,9 @@ class PageRouter {
       "transaction":(context) => const TransactionPage(),
       "transaction_detail":(context) => const TransactionDetail(),
       "avatar":(context) => const AvatarAnimation(),
-      "trace":(context) => const GameHome(), //TracePage(),
+      "trace":(context) => const TracePage(),
+      "game_load":(context) => const GameLoad(),
+      "game_home":(context) => const GameHome(),
     };
   }
 
