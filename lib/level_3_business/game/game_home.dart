@@ -128,7 +128,7 @@ class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
       _character.direction = Direction.left;
     } else {
       _character.direction = Direction.none;
-    }ß
+    }
     return super.onKeyEvent(event, keysPressed);
   }
 }
