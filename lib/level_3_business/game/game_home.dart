@@ -96,6 +96,7 @@ class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
     // character
     String filePath = await fileStorage.storagePath("rive") + "character.riv";
     final artBoard = await loadArtboard(RiveFile.file(filePath));
+    // final artBoard = await loadArtboard(RiveFile.network("http://www.aaronview.cn/design/res/character.riv"));
     RiveComponent riveComponent = RiveComponent(artboard: artBoard);
     final initPosition = Vector2(vec.x / 2, vec.y / 2);
     _character = Character(riveComponent, initPosition);

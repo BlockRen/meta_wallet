@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileStorage {
@@ -55,15 +56,19 @@ class FileStorage {
 
   ///
   Future<String> storagePath(String? subPath) async {
-    Directory? dir;
-    if (Platform.isIOS) {
-      dir = await getLibraryDirectory();
-    } else if (Platform.isAndroid) {
-      dir = await getExternalStorageDirectory();
-    }
     String path = "";
-    if (dir != null) {
-      path = (subPath != null) ? (dir.path + "/" + subPath) : dir.path;
+    if(kIsWeb) {
+      path = "./";
+    } else {
+      Directory? dir;
+      if (Platform.isIOS) {
+        dir = await getLibraryDirectory();
+      } else if (Platform.isAndroid) {
+        dir = await getExternalStorageDirectory();
+      }
+      if (dir != null) {
+        path = (subPath != null) ? (dir.path + "/" + subPath) : dir.path;
+      }
     }
     return path;
   }

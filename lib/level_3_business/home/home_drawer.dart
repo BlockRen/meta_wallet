@@ -25,7 +25,7 @@ class HomeDrawer extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/avatar.jpg',
+                        'assets/images/avatar.jpg',
                         width: 80,
                       ),
                     ),

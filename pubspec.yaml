@@ -123,19 +123,6 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
   assets:
-    - assets/QR.svg
-    - assets/avatar.jpg
-    - assets/tom_morello.riv
-    - assets/tiles/dmap.tmx
-    - assets/tiles/map.tmx
-    - assets/tiles/mymap.tmx
-    - assets/tiles/myset.tsx
-    - assets/map-level1.png
-    - assets/map-level2.png
-    - assets/coins.png
-    - assets/grid.png
-    - assets/grid_red.png
-    - assets/tiles/emap.tmx
-    - assets/tiles/empty.tsx
+    - assets/tiles/
     - assets/images/
     - assets/rives/

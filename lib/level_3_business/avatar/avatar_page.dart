@@ -34,7 +34,7 @@ class _AvatarAnimationState extends State<AvatarAnimation> {
       ),
       body: Center(
         child: RiveAnimation.asset(
-          'assets/tom_morello.riv',
+          'assets/rives/tom_morello.riv',
           fit: BoxFit.fitWidth,
           artboard: 'Artboard',
           controllers: [_controller],

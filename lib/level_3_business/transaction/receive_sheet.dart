@@ -89,7 +89,7 @@ class _ReceiveSheetStateState extends State<ReceiveSheet> {
                         child: SizedBox(
                           width: computedMaxSize / 1.07,
                           height: computedMaxSize / 1.07,
-                          child: SvgPicture.asset('assets/QR.svg'),
+                          child: SvgPicture.asset('assets/images/QR.svg'),
                         ),
                       ),
                       // Actual QR part of the QR
