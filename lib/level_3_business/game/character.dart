@@ -1,11 +1,12 @@
 import 'package:flame/components.dart';
+import 'package:flame_forge2d/contact_callbacks.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_rive/flame_rive.dart';
 import 'package:rive/rive.dart';
 import 'package:meta_wallet/level_3_business/game/direction.dart';
 import 'package:meta_wallet/level_3_business/game/sprite/rive_body_component.dart';
 
-class Character extends RiveBodyComponent {
+class Character extends RiveBodyComponent with ContactCallback {
   final Vector2 position;
 
   Character(RiveComponent riveComponent, this.position, {
@@ -18,10 +19,6 @@ class Character extends RiveBodyComponent {
   SMIInput<double>? _levelInput;
   final double _moveSpeed = 50.0;
   Direction direction = Direction.none;
-  // Direction _collisionDirection = Direction.none;
-  // bool _hasCollided = false;
-  //
-  // Vector2 _prePosition = Vector2.zero();
 
   @override
   Future<void> onLoad() async {
@@ -42,6 +39,8 @@ class Character extends RiveBodyComponent {
       ..density = 5.0
       ..friction = 0.95;
     final bodyDef = BodyDef()
+      // To be able to determine object in collision
+      ..userData = this
       ..type = BodyType.dynamic
       ..fixedRotation = true
       ..linearDamping = 5.0
@@ -59,10 +58,6 @@ class Character extends RiveBodyComponent {
   }
 
   void movePlayer(double delta) {
-    // if (!canPlayerMove()) {
-    //   position = _prePosition;
-    //   return;
-    // }
     // debugPrint("the move delta: " + delta.toString());
     /// why 0.7
     /// To ensure the 45 degree move to be the same speed with the row. So sqrt(1) is about 0.7
@@ -103,5 +98,16 @@ class Character extends RiveBodyComponent {
         _levelInput?.value = 0;
         break;
     }
+  }
+
+  /// Contact callback
+  @override
+  void begin(a, b, Contact contact) {
+
+  }
+
+  @override
+  void end(a, b, Contact contact) {
+
   }
 }

@@ -221,9 +221,11 @@ packages:
   flame_forge2d:
     dependency: "direct main"
     description:
-      name: flame_forge2d
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "packages/flame_forge2d"
+      ref: main
+      resolved-ref: f90652e782f03b3368f8ec6ad58596ee867e7df5
+      url: "https://github.com/BlockRen/flame.git"
+    source: git
     version: "0.8.3"
   flame_rive:
     dependency: "direct main"
@@ -652,7 +654,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.3"
+    version: "2.3.6"
   xdg_directories:
     dependency: transitive
     description:

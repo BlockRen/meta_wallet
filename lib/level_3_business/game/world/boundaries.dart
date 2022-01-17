@@ -30,7 +30,7 @@ class Wall extends BodyComponent {
 
     final fixtureDef = FixtureDef(shape)
       ..restitution = 0.0
-      ..friction = 0.3;
+      ..friction = 0.1;
 
     final bodyDef = BodyDef()
       ..userData = this // To be able to determine object in collision

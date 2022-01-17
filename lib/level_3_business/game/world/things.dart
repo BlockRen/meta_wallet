@@ -1,7 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:flame_forge2d/contact_callbacks.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_forge2d/position_body_component.dart';
+import 'package:meta_wallet/level_3_business/game/character.dart';
 import 'package:tiled/tiled.dart';
 
 class CollidablePolygon extends PositionComponent with HasHitboxes, Collidable {
@@ -39,7 +41,7 @@ class CollidablePolygon extends PositionComponent with HasHitboxes, Collidable {
   }
 }
 
-class Football extends PositionBodyComponent {
+class Football extends PositionBodyComponent with ContactCallback {
   final Vector2 position;
 
   Football(
@@ -56,16 +58,31 @@ class Football extends PositionBodyComponent {
 
   @override
   Body createBody() {
-    final shape = PolygonShape()..setAsBoxXY(2, 2);
+    final shape = CircleShape()..radius = 8;
     final fixtureDef = FixtureDef(shape)
-      ..restitution = 0.1
-      ..density = 0.5
+      // more bouncy when the value bigger.
+      ..restitution = 0.6
+      ..density = 0.1
       ..friction = 0.2;
     final bodyDef = BodyDef()
+      // To be able to determine object in collision
+      ..userData = this
       ..type = BodyType.dynamic
-      ..linearDamping = 0.2
+      ..linearDamping = 0.5
+      ..angularDamping = 0.6
       ..position = Vector2(position.x, -position.y);
     final body = world.createBody(bodyDef)..createFixture(fixtureDef);
     return body;
   }
+
+  @override
+  void begin(a, b, Contact contact) {
+    if (b is Character) {
+      final impulse = contact.manifold.localPoint; //..multiply(Vector2(1, -1));
+      body.applyLinearImpulse(impulse * 1000);
+    }
+  }
+
+  @override
+  void end(a, b, Contact contact) {}
 }

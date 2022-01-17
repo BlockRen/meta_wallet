@@ -46,11 +46,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  #
+  # flame
   flame: ^1.0.0
-#    git:
-#      url: https://github.com/flame-engine/flame.git
-#      ref: -- #master
   # tiled
   flame_tiled: ^1.0.0
   tiled: ^0.7.3
@@ -58,7 +55,11 @@ dependencies:
   flame_rive: ^1.0.0
   rive: ^0.7.33
   # forge2D
-  flame_forge2d: ^0.8.3
+  flame_forge2d:
+    git: # Use the fork lib
+      url: https://github.com/BlockRen/flame.git
+      path: packages/flame_forge2d
+      ref: main
   forge2d: ^0.8.1
 
 dev_dependencies:
