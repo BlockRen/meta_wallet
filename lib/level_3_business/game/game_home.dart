@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'dart:ui';
+import 'package:flame/particles.dart' as fp;
 import 'package:flutter/material.dart';
 import 'package:flame/input.dart';
 import 'package:flame_rive/flame_rive.dart';
@@ -54,7 +56,6 @@ class _GameHomeState extends State<GameHome> {
 }
 
 class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
-  // final Player _player = Player();
   late Character _character;
   // final Things _things = Things();
 
@@ -103,6 +104,16 @@ class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
     add(_character);
     // camera follow the character
     camera.followComponent(_character.riveComponent, worldBounds: Rect.fromLTRB(0, 0, vec.x, vec.y));
+
+    /// Particle Effect
+    ParticleComponent pc = ParticleComponent(
+      fp.TranslatedParticle(
+        lifespan: 5,
+        offset: Vector2(vec.x / 2, vec.y / 2.5),
+        child: fireworkParticle(),
+      ),
+    );
+    add(pc);
   }
 
   void onJoypadDirectionChanged(Direction direction) {
@@ -131,5 +142,64 @@ class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
       _character.direction = Direction.none;
     }
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  fp.Particle fireworkParticle() {
+    // A pallete to paint over the "sky"
+    final paints = [
+      Colors.amber,
+      Colors.amberAccent,
+      Colors.red,
+      Colors.redAccent,
+      Colors.yellow,
+      Colors.yellowAccent,
+      // Adds a nice "lense" tint
+      // to overall effect
+      Colors.blue,
+    ].map((color) => Paint()..color = color).toList();
+
+    return fp.Particle.generate(
+      generator: (i) {
+        final initialSpeed = randomCellVector2();
+        final deceleration = initialSpeed * -1;
+        final gravity = Vector2(0, 40);
+
+        return fp.AcceleratedParticle(
+          speed: initialSpeed,
+          acceleration: deceleration + gravity,
+          child: fp.ComputedParticle(
+            renderer: (canvas, particle) {
+              final paint = randomElement(paints);
+              // Override the color to dynamically update opacity
+              paint.color = paint.color.withOpacity(1 - particle.progress);
+
+              canvas.drawCircle(
+                Offset.zero,
+                // Closer to the end of lifespan particles
+                // will turn into larger glaring circles
+                rnd.nextDouble() * particle.progress > .6
+                    ? rnd.nextDouble() * (50 * particle.progress)
+                    : 2 + (3 * particle.progress),
+                paint,
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  final Random rnd = Random();
+  static const gridSize = 5.0;
+  Vector2 get cellSize => size / gridSize;
+
+  /// Returns random [Vector2] within a virtual grid cell
+  Vector2 randomCellVector2() {
+    return (Vector2.random() - Vector2.random())..multiply(cellSize);
+  }
+
+  /// Returns a random element from a given list
+  T randomElement<T>(List<T> list) {
+    return list[rnd.nextInt(list.length)];
   }
 }
