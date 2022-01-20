@@ -33,7 +33,8 @@ class Character extends RiveBodyComponent with ContactCallback {
 
   @override
   Body createBody() {
-    final shape = PolygonShape()..setAsBoxXY(15, 15);
+    final shape = PolygonShape()..setAsBoxXY(12, 12);
+    // final shape = CircleShape()..radius = 12;
     final fixtureDef = FixtureDef(shape)
       ..restitution = 0.2
       ..density = 5.0
