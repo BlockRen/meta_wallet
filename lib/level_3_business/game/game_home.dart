@@ -68,7 +68,7 @@ class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    Vector2 vec = Vector2(16*34, 16*73);
+    Vector2 vec = Vector2(16*150, 16*100);
     // background image
     final bg = await Sprite.load('map.jpeg');
     final image = SpriteComponent(size: vec, sprite: bg);
@@ -79,18 +79,18 @@ class TiledGame extends Forge2DGame with HasTappables, KeyboardEvents {
     addAll(Boundaries.createBoundaries(gameSize));
 
     // tiled map
-    final tiledMap = await TiledComponent.load('emap.tmx', Vector2.all(16));
+    final tiledMap = await TiledComponent.load('forest.tmx', Vector2.all(16));
     add(tiledMap);
 
     // final objectGroup = tiledMap.tileMap.getObjectGroupFromLayer('ObjectLayer');
     // _things.addCollidables(objectGroup);
     // add(_things);
 
-    Vector2 position = Vector2(vec.x / 5, vec.y / 2);
+    Vector2 position = Vector2(vec.x / 2 - 100, vec.y / 2);
     final ball = Football(position, size: Vector2(25, 25));
     add(ball);
 
-    position = Vector2(vec.x / 2, vec.y / 3);
+    position = Vector2(vec.x / 2, vec.y / 2 - 100);
     final ball2 = Football(position, size: Vector2(25, 25));
     add(ball2);
 

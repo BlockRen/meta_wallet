@@ -79,7 +79,7 @@ class Football extends PositionBodyComponent with ContactCallback {
   void begin(a, b, Contact contact) {
     if (b is Character) {
       final impulse = contact.manifold.localPoint; //..multiply(Vector2(1, -1));
-      body.applyLinearImpulse(impulse * 1000);
+      body.applyLinearImpulse(impulse * 1500);
     }
   }
 

@@ -13,7 +13,7 @@ class Character extends RiveBodyComponent with ContactCallback {
     Vector2? size
   }) : super(
     riveComponent,
-    size ?? Vector2.all(150)
+    size ?? Vector2.all(100)
   );
 
   SMIInput<double>? _levelInput;

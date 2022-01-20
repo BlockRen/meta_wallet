@@ -49,7 +49,7 @@ dependencies:
   # flame
   flame: ^1.0.0
   # tiled
-  flame_tiled: ^1.0.0
+  flame_tiled: ^1.1.0
   tiled: ^0.7.3
   # rive animation
   flame_rive: ^1.0.0
